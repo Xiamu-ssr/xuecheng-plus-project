@@ -37,3 +37,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# self
+test
+/xuecheng-plus-generator/src/main/java/com/xuecheng/*
+!/xuecheng-plus-generator/src/main/java/com/xuecheng/generator/
