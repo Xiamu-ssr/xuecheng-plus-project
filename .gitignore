@@ -42,3 +42,5 @@ build/
 test
 /xuecheng-plus-generator/src/main/java/com/xuecheng/*
 !/xuecheng-plus-generator/src/main/java/com/xuecheng/generator/
+
+logs
