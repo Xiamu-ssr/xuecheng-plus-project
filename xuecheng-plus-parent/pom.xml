@@ -28,7 +28,9 @@
         <fastjson2.version>2.0.43</fastjson2.version>
         <druid-spring-boot-starter.version>1.2.21</druid-spring-boot-starter.version>
         <mysql-connector-j.version>8.2.0</mysql-connector-j.version>
-        <mybatis-plus-boot-starter.version>3.4.1</mybatis-plus-boot-starter.version>
+<!--        <mybatis-plus-boot-starter.version>3.4.1</mybatis-plus-boot-starter.version>-->
+        <mybatis-plus-boot-starter.version>3.5.4</mybatis-plus-boot-starter.version>
+        <mybatis-plus-boot3-starter.version>3.5.5</mybatis-plus-boot3-starter.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <minio.version>8.5.7</minio.version>
         <google.guava.version>32.1.3-jre</google.guava.version>
@@ -111,11 +113,21 @@
                 <artifactId>mysql-connector-j</artifactId>
                 <version>${mysql-connector-j.version}</version>
             </dependency>
-            <!--mybatis-plus-->
+<!--            mybatis-plus-->
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.baomidou</groupId>-->
+<!--                <artifactId>mybatis-plus-generator</artifactId>-->
+<!--                <version>${mybatis-plus-boot-starter.version}</version>-->
+<!--            </dependency>-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+                <version>${mybatis-plus-boot3-starter.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
