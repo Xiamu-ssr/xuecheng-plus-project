@@ -2,6 +2,8 @@ package com.xuecheng.content.api;
 
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
+import com.xuecheng.content.model.dto.AddCourseDto;
+import com.xuecheng.content.model.dto.CourseBaseInfoDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
 import com.xuecheng.content.service.CourseBaseInfoService;
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Tag(name = "课程信息编辑接口")
-@RestController("content")
+@RestController
 public class CourseBaseInfoController {
 
     @Autowired
@@ -29,9 +31,13 @@ public class CourseBaseInfoController {
     public PageResult<CourseBase> list(
             PageParams pageParams,
             @Parameter(description = "请求具体内容") @RequestBody(required = false) QueryCourseParamsDto dto){
-
-        System.out.println(pageParams);
-        System.out.println(dto);
         return courseBaseInfoService.queryCourseBaseList(pageParams, dto);
+    }
+
+    @Operation(summary = "新增课程基础信息")
+    @PostMapping("/course")
+    public CourseBaseInfoDto createCourseBase(@RequestBody AddCourseDto dto){
+        Long companyId = 1232141425L;
+        return courseBaseInfoService.createCourseBase(companyId ,dto);
     }
 }

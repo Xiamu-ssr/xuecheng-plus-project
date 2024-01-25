@@ -19,18 +19,18 @@
     <properties>
         <java.version>17</java.version>
     </properties>
-    <modules>
-        <module>xuecheng-plus-parent</module>
-        <module>xuecheng-plus-base</module>
-    </modules>
+<!--    <modules>-->
+<!--        <module>xuecheng-plus-parent</module>-->
+<!--        <module>xuecheng-plus-base</module>-->
+<!--    </modules>-->
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 
 </project>
