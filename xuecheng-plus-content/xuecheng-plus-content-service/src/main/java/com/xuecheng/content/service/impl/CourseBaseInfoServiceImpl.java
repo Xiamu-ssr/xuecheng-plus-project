@@ -2,6 +2,8 @@ package com.xuecheng.content.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xuecheng.base.exception.CommonError;
+import com.xuecheng.base.exception.XueChengPlusException;
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.content.mapper.CourseBaseMapper;
@@ -98,6 +100,12 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         return getCourseBaseInfo(courseBase.getId());
     }
 
+    /**
+     * 保存课程基础信息
+     *
+     * @param courseBase 实体
+     * @return int
+     */
     private int saveCourseBase(CourseBase courseBase){
         //validity check
         //check if data is already exist in sql
@@ -119,7 +127,7 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         //validity check
         if (courseMarket.getCharge().equals("201001")){
             if (courseMarket.getPrice() == null || courseMarket.getPrice() <=0){
-                throw new RuntimeException("价格不能为空且必须大于0");
+                XueChengPlusException.cast("价格不能为空且必须大于0");
             }
         }
         //check if data is already exist in sql
