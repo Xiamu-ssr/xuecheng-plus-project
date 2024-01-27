@@ -17,6 +17,9 @@ import jakarta.validation.constraints.Size;
 @Schema(name="AddCourseDto", description="新增课程基本信息")
 public class AddCourseDto {
 
+// @NotEmpty(message = "修改课程名称不能为空", groups = {ValidationGroups.Update.class})
+// private Long id;
+
  @NotEmpty(message = "新增课程名称不能为空", groups = {ValidationGroups.Insert.class})
  @NotEmpty(message = "修改课程名称不能为空", groups = {ValidationGroups.Update.class})
  @Schema(description = "课程名称")
