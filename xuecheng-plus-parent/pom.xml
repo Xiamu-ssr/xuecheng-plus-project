@@ -28,8 +28,7 @@
         <fastjson2.version>2.0.43</fastjson2.version>
         <druid-spring-boot-starter.version>1.2.21</druid-spring-boot-starter.version>
         <mysql-connector-j.version>8.2.0</mysql-connector-j.version>
-<!--        <mybatis-plus-boot-starter.version>3.4.1</mybatis-plus-boot-starter.version>-->
-        <mybatis-plus-boot-starter.version>3.5.4</mybatis-plus-boot-starter.version>
+        <mybatis-plus-boot-starter.version>3.4.1</mybatis-plus-boot-starter.version>
         <mybatis-plus-boot3-starter.version>3.5.5</mybatis-plus-boot3-starter.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <minio.version>8.5.7</minio.version>
@@ -173,7 +172,18 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${springdoc-openapi.version}</version>
+<!--                <exclusions>-->
+<!--                    <exclusion>-->
+<!--                        <groupId>org.webjars</groupId>-->
+<!--                        <artifactId>swagger-ui</artifactId>-->
+<!--                    </exclusion>-->
+<!--                </exclusions>-->
             </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.webjars</groupId>-->
+<!--                <artifactId>swagger-ui</artifactId>-->
+<!--                <version>5.10.3</version>-->
+<!--            </dependency>-->
             <!--okhttp -->
             <dependency>
                 <groupId>com.squareup.okhttp3</groupId>
@@ -217,12 +227,12 @@
                 </includes>
             </resource>
         </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
     </build>
 
 </project>
