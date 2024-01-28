@@ -5,6 +5,7 @@ import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.content.model.dto.AddCourseDto;
 import com.xuecheng.content.model.dto.CourseBaseInfoDto;
+import com.xuecheng.content.model.dto.EditCourseDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
 import com.xuecheng.content.service.CourseBaseInfoService;
@@ -20,7 +21,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Tag(name = "课程信息编辑接口")
+@Tag(name = "课程基本信息接口")
 @RestController
 public class CourseBaseInfoController {
 
@@ -28,7 +29,7 @@ public class CourseBaseInfoController {
     CourseBaseInfoService courseBaseInfoService;
 
     @ApiResponse(responseCode = "200", description = "Successfully retrieved user")
-    @Operation(summary = "课程查询接口")
+    @Operation(summary = "查询课程信息列表")
     @PostMapping("/course/list")
     public PageResult<CourseBase> list(
             PageParams pageParams,
@@ -41,5 +42,18 @@ public class CourseBaseInfoController {
     public CourseBaseInfoDto createCourseBase(@RequestBody @Validated(ValidationGroups.Insert.class) AddCourseDto dto){
         Long companyId = 1232141425L;
         return courseBaseInfoService.createCourseBase(companyId ,dto);
+    }
+
+    @Operation(description = "根据课程id查询课程信息")
+    @GetMapping("/course/{courseId}")
+    public CourseBaseInfoDto getCourseBaseById(@PathVariable Long courseId){
+        return courseBaseInfoService.getCourseBaseById(courseId);
+    }
+
+    @Operation(description = "修改课程信息")
+    @PutMapping("/course")
+    public CourseBaseInfoDto modifyCourseBase(@RequestBody @Validated(ValidationGroups.Update.class) EditCourseDto dto){
+        Long companyId = 1232141425L;
+        return courseBaseInfoService.modifyCourseBase(companyId, dto);
     }
 }

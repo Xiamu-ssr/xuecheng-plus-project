@@ -11,6 +11,7 @@ import com.xuecheng.content.mapper.CourseCategoryMapper;
 import com.xuecheng.content.mapper.CourseMarketMapper;
 import com.xuecheng.content.model.dto.AddCourseDto;
 import com.xuecheng.content.model.dto.CourseBaseInfoDto;
+import com.xuecheng.content.model.dto.EditCourseDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
 import com.xuecheng.content.model.po.CourseCategory;
@@ -101,6 +102,56 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
     }
 
     /**
+     * 通过id获取课程基础
+     *
+     * @param courseId 课程id
+     * @return {@link CourseBaseInfoDto}
+     */
+    @Override
+    public CourseBaseInfoDto getCourseBaseById(Long courseId) {
+        return getCourseBaseInfo(courseId);
+    }
+
+    /**
+     * 修改课程信息
+     *
+     * @param companyId 公司id
+     * @param dto       dto
+     * @return {@link CourseBaseInfoDto}
+     */
+    @Override
+    @Transactional
+    public CourseBaseInfoDto modifyCourseBase(Long companyId, EditCourseDto dto) {
+        //validation check
+        CourseBase courseBase = courseBaseMapper.selectById(dto.getId());
+        if(ObjectUtils.isEmpty(courseBase)){
+            XueChengPlusException.cast("课程不存在");
+        }
+        if (!companyId.equals(courseBase.getCompanyId())){
+            XueChengPlusException.cast("只允许修改属于本机构的课程");
+        }
+        //write into course_base table
+        BeanUtils.copyProperties(dto, courseBase);
+        courseBase.setChangeDate(null);
+        int save1 = saveCourseBase(courseBase);
+        if (save1 <= 0){
+            throw new RuntimeException("更新课程失败");
+        }
+        //write into course_market table
+        CourseMarket courseMarket = new CourseMarket();
+        BeanUtils.copyProperties(dto, courseMarket);
+        courseMarket.setId(courseBase.getId());
+        int save2 = saveCourseMarket(courseMarket);
+        if (save2 <= 0){
+            throw new RuntimeException("更新课程失败");
+        }
+        //after all data write into sql
+        //need query info back to front-end
+
+        return getCourseBaseInfo(courseBase.getId());
+    }
+
+    /**
      * 保存课程基础信息
      *
      * @param courseBase 实体
@@ -109,8 +160,8 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
     private int saveCourseBase(CourseBase courseBase){
         //validity check
         //check if data is already exist in sql
-        CourseBase courseBase1 = courseBaseMapper.selectById(courseBase.getId());
-        if (courseBase1 == null){
+        boolean exists = courseBaseMapper.exists(new LambdaQueryWrapper<CourseBase>().eq(CourseBase::getId, courseBase.getId()));
+        if (!exists){
             return courseBaseMapper.insert(courseBase);
         }else {
             return courseBaseMapper.updateById(courseBase);
@@ -131,8 +182,8 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
             }
         }
         //check if data is already exist in sql
-        CourseMarket courseMarket1 = courseMarketMapper.selectById(courseMarket.getId());
-        if (courseMarket1 == null){
+        boolean exists = courseMarketMapper.exists(new LambdaQueryWrapper<CourseMarket>().eq(CourseMarket::getId, courseMarket.getId()));
+        if (!exists){
             return courseMarketMapper.insert(courseMarket);
         }else {
             return courseMarketMapper.updateById(courseMarket);
