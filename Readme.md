@@ -16,3 +16,8 @@
 7. 些许bug修复
 
 # Stage 03
+1. validation check for Dto which from front-end to back-end
+2. add feature "content - query or add or modify course plan(teachplan)"
+3. some bugs fix
+
+# Stage 04
