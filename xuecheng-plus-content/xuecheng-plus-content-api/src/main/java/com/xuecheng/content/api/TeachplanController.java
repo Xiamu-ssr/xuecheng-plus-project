@@ -3,10 +3,12 @@ package com.xuecheng.content.api;
 import com.xuecheng.base.exception.ValidationGroups;
 import com.xuecheng.content.model.dto.SaveTeachplanDto;
 import com.xuecheng.content.model.dto.TeachplanDto;
+import com.xuecheng.content.model.po.CourseTeacher;
 import com.xuecheng.content.service.TeachplanService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.bouncycastle.pqc.crypto.util.PQCOtherInfoGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +37,21 @@ public class TeachplanController {
     @PostMapping ("/teachplan")
     public void saveTeachplan(@RequestBody @Validated SaveTeachplanDto dto){
         teachplanService.saveTeachplan(dto);
+        return;
+    }
+
+    @Operation(description = "delete teach plan by teachplan_id")
+    @DeleteMapping("/teachplan/{teachplanId}")
+    public void deleteTeachplan(@PathVariable Long teachplanId){
+        teachplanService.deleteTeachplan(teachplanId);
+        return;
+    }
+
+    @Operation(description = "move down/up the order of teach plan by teachplan_id. {move} = ['movedown','moveup']")
+    @PostMapping("/teachplan/{move}/{teachplanId}")
+    public void moveTeachplan(@PathVariable String move, @PathVariable Long teachplanId){
+
+        teachplanService.moveTeachplan(move ,teachplanId);
         return;
     }
 }
