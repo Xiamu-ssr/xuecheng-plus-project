@@ -18,6 +18,9 @@
 # Stage 03
 1. validation check for Dto which from front-end to back-end
 2. add feature "content - query or add or modify course plan(teachplan)"
-3. some bugs fix
+3. add feature "content - modify course base info"
+4. add feature "content - query or add or modify course teacher"
+5. add feature "content - delete the entire course"
+6. some bugs fix
 
 # Stage 04

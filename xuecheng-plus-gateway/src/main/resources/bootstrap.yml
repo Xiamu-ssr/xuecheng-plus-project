@@ -1,7 +1,7 @@
 #微服务配置
 spring:
   application:
-    name: content-api
+    name: gateway
   profiles:
     active: dev
   cloud:
@@ -19,9 +19,6 @@ spring:
         file-extension: yaml
         refresh-enabled: true
         shared-configs:
-          - data-id: openapi-${spring.profiles.active}.yaml
-            group: xuecheng-plus-common
-            refresh: true
           - data-id: logging-${spring.profiles.active}.yaml
             group: xuecheng-plus-common
             refresh: true
