@@ -1,7 +1,7 @@
 #微服务配置
 spring:
   application:
-    name: content-api
+    name: media-api
   profiles:
     active: dev
   cloud:
