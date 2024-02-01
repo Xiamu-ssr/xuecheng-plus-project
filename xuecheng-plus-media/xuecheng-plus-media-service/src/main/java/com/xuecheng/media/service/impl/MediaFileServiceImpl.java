@@ -43,6 +43,9 @@ import java.util.List;
 public class MediaFileServiceImpl implements MediaFileService {
 
     @Autowired
+    MediaFileService mediaFileService;
+
+    @Autowired
     MediaFilesMapper mediaFilesMapper;
 
     @Autowired
@@ -75,7 +78,6 @@ public class MediaFileServiceImpl implements MediaFileService {
     }
 
     @Override
-    @Transactional
     public UploadFileResultDto upload(Long companyId, UploadFileParamsDto dto, String localFilePath) {
         //upload file to minio
         String filename = dto.getFilename();
@@ -89,7 +91,7 @@ public class MediaFileServiceImpl implements MediaFileService {
             XueChengPlusException.cast("upload file Fail.");
         }
         //upload info to mysql
-        MediaFiles mediaFiles = upload2Mysql(fileMd5, companyId, dto, bucket_mediafiles, objectName);
+        MediaFiles mediaFiles = mediaFileService.upload2Mysql(fileMd5, companyId, dto, bucket_mediafiles, objectName);
         if (mediaFiles == null){
             XueChengPlusException.cast("upload file info into Mysql Fail.");
         }
@@ -197,7 +199,9 @@ public class MediaFileServiceImpl implements MediaFileService {
      * @param objectName 对象名称
      * @return {@link MediaFiles}
      */
-    private MediaFiles upload2Mysql(String fileMd5, Long companyId, UploadFileParamsDto dto, String bucket, String objectName){
+    @Transactional
+    @Override
+    public MediaFiles upload2Mysql(String fileMd5, Long companyId, UploadFileParamsDto dto, String bucket, String objectName){
         MediaFiles mediaFiles = mediaFilesMapper.selectById(fileMd5);
         if (mediaFiles == null){
             mediaFiles = new MediaFiles();

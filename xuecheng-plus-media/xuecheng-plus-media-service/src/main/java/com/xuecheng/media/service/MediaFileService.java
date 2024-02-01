@@ -35,4 +35,6 @@ public interface MediaFileService {
      * @return {@link UploadFileResultDto}
      */
     public UploadFileResultDto upload(Long companyId, UploadFileParamsDto dto, String localFilePath);
+
+    public MediaFiles upload2Mysql(String fileMd5, Long companyId, UploadFileParamsDto dto, String bucket, String objectName);
 }
