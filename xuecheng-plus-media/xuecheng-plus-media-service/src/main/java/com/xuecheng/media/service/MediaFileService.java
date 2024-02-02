@@ -36,5 +36,7 @@ public interface MediaFileService {
      */
     public UploadFileResultDto upload(Long companyId, UploadFileParamsDto dto, String localFilePath);
 
+    public boolean upload2Minio(String localFilePath, String bucket, String objectName, String mimeType);
+
     public MediaFiles upload2Mysql(String fileMd5, Long companyId, UploadFileParamsDto dto, String bucket, String objectName);
 }

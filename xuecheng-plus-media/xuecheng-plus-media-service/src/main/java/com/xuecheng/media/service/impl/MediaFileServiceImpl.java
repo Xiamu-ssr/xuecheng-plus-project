@@ -14,13 +14,17 @@ import com.xuecheng.media.model.dto.UploadFileResultDto;
 import com.xuecheng.media.model.po.MediaFiles;
 import com.xuecheng.media.service.MediaFileService;
 import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
 import io.minio.UploadObjectArgs;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +46,7 @@ import java.util.List;
 @Slf4j
 public class MediaFileServiceImpl implements MediaFileService {
 
+    @Lazy
     @Autowired
     MediaFileService mediaFileService;
 
@@ -170,7 +175,8 @@ public class MediaFileServiceImpl implements MediaFileService {
      * @param objectName    对象名称
      * @param mimeType      mime类型
      */
-    private boolean upload2Minio(String localFilePath, String bucket, String objectName, String mimeType){
+    @Override
+    public boolean upload2Minio(String localFilePath, String bucket, String objectName, String mimeType){
 
         try {
             UploadObjectArgs uploadObjectArgs = UploadObjectArgs.builder()
@@ -180,7 +186,7 @@ public class MediaFileServiceImpl implements MediaFileService {
                     .contentType(mimeType)
                     .build();
             minioClient.uploadObject(uploadObjectArgs);
-            log.debug("upload file to Minio Success, bucket:{}, objectName:{}", bucket, objectName);
+            log.info("upload file to Minio Success, bucket:{}, objectName:{}", bucket, objectName);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
