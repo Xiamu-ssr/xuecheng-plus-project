@@ -24,3 +24,12 @@
 6. some bugs fix
 
 # Stage 04
+
+# Stage 05
+1. 整合Nacos
+2. 整个Minio
+3. 添加媒资管理服务
+4. 新增文件上传接口
+5. some bugs fix
+
+# Stage 06
