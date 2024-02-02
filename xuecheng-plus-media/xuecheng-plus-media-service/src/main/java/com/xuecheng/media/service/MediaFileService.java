@@ -7,6 +7,8 @@ import com.xuecheng.media.model.dto.UploadFileParamsDto;
 import com.xuecheng.media.model.dto.UploadFileResultDto;
 import com.xuecheng.media.model.po.MediaFiles;
 
+import java.io.File;
+
 /**
  * @author Mr.M
  * @version 1.0
@@ -36,7 +38,17 @@ public interface MediaFileService {
      */
     public UploadFileResultDto upload(Long companyId, UploadFileParamsDto dto, String localFilePath);
 
+    /**
+     * 从minio下载文件
+     *
+     * @param bucket     bucket
+     * @param objectName objectName
+     * @return {@link File}
+     */
+    public File downloadFileFromMinIO(String bucket, String objectName);
+
     public boolean upload2Minio(String localFilePath, String bucket, String objectName, String mimeType);
 
     public MediaFiles upload2Mysql(String fileMd5, Long companyId, UploadFileParamsDto dto, String bucket, String objectName);
+
 }

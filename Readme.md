@@ -33,3 +33,6 @@
 5. some bugs fix
 
 # Stage 06
+1. 整合xxl-job
+2. 新增视频分块上传接口
+3. some bugs fix

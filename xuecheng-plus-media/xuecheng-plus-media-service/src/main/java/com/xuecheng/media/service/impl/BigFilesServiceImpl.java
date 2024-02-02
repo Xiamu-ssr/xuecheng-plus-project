@@ -137,7 +137,7 @@ public class BigFilesServiceImpl implements BigFilesService {
             log.error("合并文件验证异常, sourceMd5: {}, mergeMd5: {}", fileMd5, mergeMd5);
             return RestResponse.validfail(false, "合并得到的文件与源文件不一致");
         }
-        //文件信息入库
+        //文件信息入库并//记录待处理任务
         MediaFiles mediaFiles = mediaFileService.upload2Mysql(fileMd5, companyId, uploadFileParamsDto, bucket_video, mergePath);
         if (mediaFiles == null){
             log.error("文件信息入库失败, fileMd5:{}", fileMd5);
