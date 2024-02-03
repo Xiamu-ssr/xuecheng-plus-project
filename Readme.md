@@ -34,5 +34,13 @@
 
 # Stage 06
 1. 整合xxl-job
-2. 新增视频分块上传接口
+2. 添加大文件（视频）分块上传接口
 3. some bugs fix
+
+# Stage 07
+1. 修复了Nacos无法正常使用log4j2的bug
+2. 整合了FreeMarker demo
+3. 部署了静态前端
+4. nginx反向代理Minio并负载均衡
+5. 视频转码XXL-JOB实现
+6. some bug fixed

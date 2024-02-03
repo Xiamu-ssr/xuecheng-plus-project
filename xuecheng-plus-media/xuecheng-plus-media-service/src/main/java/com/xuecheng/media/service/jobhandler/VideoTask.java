@@ -105,7 +105,7 @@ public class VideoTask {
                                 return;
                             }
                             //tips:这里使用源文件的md5而不是转码后的md5是为了将两份视频放在同一位置
-                            String url = getMergePathByMd5(fileId, ".mp4");
+                            String url = "/"+bucket+"/" + changeSuffix(objectName, ".mp4");
 
                             //结果保存
                             mediaProcessService.saveProcessFinishStatus(taskId, "2", fileId, url, null);
@@ -121,16 +121,6 @@ public class VideoTask {
         countDownLatch.await(30, TimeUnit.MINUTES);
     }
 
-    /**
-     * 通过md5获取合并文件路径
-     *
-     * @param md5       md5
-     * @param extension 扩展名
-     * @return {@link String}
-     */
-    private String getMergePathByMd5(String md5, String extension){
-        return md5.substring(0, 1) + "/" + md5.substring(1, 2) + "/" + md5 + "/" + md5 + extension;
-    }
 
     private String changeSuffix(String source, String extension){
         int lastDotIndex = source.lastIndexOf('.');

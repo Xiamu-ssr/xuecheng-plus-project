@@ -51,4 +51,11 @@ public interface MediaFileService {
 
     public MediaFiles upload2Mysql(String fileMd5, Long companyId, UploadFileParamsDto dto, String bucket, String objectName);
 
+    /**
+     * 根据id获取media_files
+     *
+     * @param mediaId 媒体id
+     * @return {@link MediaFiles}
+     */
+    MediaFiles getFileById(String mediaId);
 }
