@@ -73,6 +73,7 @@ public class MediaProcessServiceImpl implements MediaProcessService {
             //插入media_process_history
             MediaProcessHistory mediaProcessHistory = new MediaProcessHistory();
             BeanUtils.copyProperties(mediaProcess, mediaProcessHistory);
+            mediaProcessHistory.setId(null);
             mediaProcessHistoryMapper.insert(mediaProcessHistory);
 
             //删除media_process

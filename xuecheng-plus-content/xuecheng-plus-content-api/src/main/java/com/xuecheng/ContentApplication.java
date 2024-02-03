@@ -22,6 +22,7 @@ import org.springframework.core.env.Environment;
 //@OpenAPIDefinition(info = @Info(title = "内容管理系统", description = "对课程相关信息进行管理", version = "1.0.0"))
 public class ContentApplication {
     public static void main(String[] args) {
+        System.setProperty("nacos.logging.default.config.enabled", "false");
         SpringApplication.run(ContentApplication.class, args);
 //        ConfigurableApplicationContext context = SpringApplication.run(ContentApplication.class, args);
 //        Environment env = context.getEnvironment();

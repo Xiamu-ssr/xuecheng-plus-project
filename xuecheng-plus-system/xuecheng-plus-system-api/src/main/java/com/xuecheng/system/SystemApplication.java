@@ -18,6 +18,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class SystemApplication {
 
     public static void main(String[] args) {
+        System.setProperty("nacos.logging.default.config.enabled", "false");
         SpringApplication.run(SystemApplication.class,args);
     }
 }

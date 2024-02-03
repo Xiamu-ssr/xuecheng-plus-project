@@ -98,8 +98,7 @@ public class VideoTask {
                             return;
                         } else {
                             //上传到Minio
-                            //疑问？objectName没有改后缀名为mp4？
-                            boolean upload2Minio = mediaFileService.upload2Minio(targetVideoPath, bucket, objectName, "video/mp4");
+                            boolean upload2Minio = mediaFileService.upload2Minio(targetVideoPath, bucket, changeSuffix(objectName, ".mp4"), "video/mp4");
                             if (!upload2Minio) {
                                 log.warn("上传mp4到minio失败,fileid:{},", taskId);
                                 mediaProcessService.saveProcessFinishStatus(taskId, "3", fileId, mediaProcess.getUrl(), "上传mp4到minio失败");
@@ -131,5 +130,13 @@ public class VideoTask {
      */
     private String getMergePathByMd5(String md5, String extension){
         return md5.substring(0, 1) + "/" + md5.substring(1, 2) + "/" + md5 + "/" + md5 + extension;
+    }
+
+    private String changeSuffix(String source, String extension){
+        int lastDotIndex = source.lastIndexOf('.');
+        if (lastDotIndex != -1) {
+            return source.substring(0, lastDotIndex) + extension;
+        }
+        return source + extension;
     }
 }
