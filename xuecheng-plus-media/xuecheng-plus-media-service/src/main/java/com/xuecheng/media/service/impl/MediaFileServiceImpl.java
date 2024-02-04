@@ -266,6 +266,11 @@ public class MediaFileServiceImpl implements MediaFileService {
         return mediaFiles;
     }
 
+    @Override
+    public MediaFiles getFileById(String mediaId) {
+        return mediaFilesMapper.selectById(mediaId);
+    }
+
     private void addWaitingTask(MediaFiles mediaFiles){
         String filename = mediaFiles.getFilename();
         String extension = filename.substring(filename.lastIndexOf("."));
