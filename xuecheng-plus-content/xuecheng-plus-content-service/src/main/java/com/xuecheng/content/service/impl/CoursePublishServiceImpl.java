@@ -2,20 +2,15 @@ package com.xuecheng.content.service.impl;
 
 import com.alibaba.fastjson2.JSON;
 import com.xuecheng.base.exception.XueChengPlusException;
-import com.xuecheng.content.mapper.CourseBaseMapper;
-import com.xuecheng.content.mapper.CourseMarketMapper;
-import com.xuecheng.content.mapper.CoursePublishPreMapper;
-import com.xuecheng.content.mapper.TeachplanMapper;
+import com.xuecheng.content.mapper.*;
 import com.xuecheng.content.model.dto.CourseBaseInfoDto;
 import com.xuecheng.content.model.dto.CoursePreviewDto;
 import com.xuecheng.content.model.dto.TeachplanDto;
-import com.xuecheng.content.model.po.CourseBase;
-import com.xuecheng.content.model.po.CourseMarket;
-import com.xuecheng.content.model.po.CoursePublishPre;
-import com.xuecheng.content.model.po.Teachplan;
+import com.xuecheng.content.model.po.*;
 import com.xuecheng.content.service.CourseBaseInfoService;
 import com.xuecheng.content.service.CoursePublishService;
 import com.xuecheng.content.service.TeachplanService;
+import com.xuecheng.messagesdk.service.MqMessageService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -37,6 +32,8 @@ public class CoursePublishServiceImpl implements CoursePublishService {
     @Autowired
     CoursePublishPreMapper coursePublishPreMapper;
     @Autowired
+    CoursePublishMapper coursePublishMapper;
+    @Autowired
     TeachplanMapper teachplanMapper;
 
 
@@ -44,6 +41,8 @@ public class CoursePublishServiceImpl implements CoursePublishService {
     CourseBaseInfoService courseBaseInfoService;
     @Autowired
     TeachplanService teachplanService;
+    @Autowired
+    MqMessageService mqMessageService;
 
     @Override
     public CoursePreviewDto getCoursePreviewInfo(Long courseId) {
@@ -103,5 +102,33 @@ public class CoursePublishServiceImpl implements CoursePublishService {
         CourseBase courseBase = courseBaseMapper.selectById(courseId);
         courseBase.setAuditStatus("202003");
         courseBaseMapper.updateById(courseBase);
+    }
+
+    @Override
+    @Transactional
+    public void coursePublish(Long companyId, Long courseId) {
+        //约束
+        CoursePublishPre coursePublishPre = coursePublishPreMapper.selectById(courseId);
+        if (ObjectUtils.isEmpty(coursePublishPre)){
+            XueChengPlusException.cast("课程没有审核记录,无法发布");
+        }
+        if (!coursePublishPre.getStatus().equals("202004")){
+            XueChengPlusException.cast("课程需审核通过才可发布");
+        }
+        //向course_publish写数据
+        CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
+        if (coursePublish == null){
+            coursePublish = new CoursePublish();
+            BeanUtils.copyProperties(coursePublishPre, coursePublish);
+            coursePublishMapper.insert(coursePublish);
+        }else {
+            BeanUtils.copyProperties(coursePublishPre, coursePublish);
+            coursePublishMapper.updateById(coursePublish);
+        }
+        //向mq_message写入数据
+        mqMessageService.addMessage("course_publish", courseId.toString(), null, null);
+
+        //向course_publish_pre删除数据
+        coursePublishPreMapper.deleteById(courseId);
     }
 }
