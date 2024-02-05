@@ -44,3 +44,9 @@
 4. nginx反向代理Minio并负载均衡
 5. 视频转码XXL-JOB实现
 6. some bug fixed
+
+# Stage 08
+1. 课程预览
+2. 分布式理念
+3. 分布式事务sdk
+4. xxl-job任务抽取

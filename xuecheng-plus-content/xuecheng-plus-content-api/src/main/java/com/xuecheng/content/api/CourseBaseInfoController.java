@@ -1,6 +1,7 @@
 package com.xuecheng.content.api;
 
 import com.xuecheng.base.exception.ValidationGroups;
+import com.xuecheng.base.exception.XueChengPlusException;
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.content.model.dto.AddCourseDto;
@@ -9,13 +10,17 @@ import com.xuecheng.content.model.dto.EditCourseDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
 import com.xuecheng.content.service.CourseBaseInfoService;
+import com.xuecheng.feign.client.MediaClient;
+import com.xuecheng.media.model.dto.UploadFileResultDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,6 +32,9 @@ public class CourseBaseInfoController {
 
     @Autowired
     CourseBaseInfoService courseBaseInfoService;
+
+    @Autowired
+    MediaClient mediaClient;
 
     @ApiResponse(responseCode = "200", description = "Successfully retrieved user")
     @Operation(summary = "查询课程信息列表")
@@ -56,4 +64,5 @@ public class CourseBaseInfoController {
         Long companyId = 1232141425L;
         return courseBaseInfoService.modifyCourseBase(companyId, dto);
     }
+
 }

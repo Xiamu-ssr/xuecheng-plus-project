@@ -37,7 +37,7 @@
         <xxl-job-core.version>2.4.0</xxl-job-core.version>
         <springdoc-openapi.version>2.3.0</springdoc-openapi.version>
         <okhttp.version>4.10.0</okhttp.version>
-        <elasticsearch.version>8.11.3</elasticsearch.version>
+        <elasticsearch.version>7.17.17</elasticsearch.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -164,32 +164,11 @@
                 <version>${xxl-job-core.version}</version>
             </dependency>
             <!--swagger-->
-<!--            <dependency>-->
-<!--                <groupId>io.swagger.core.v3</groupId>-->
-<!--                <artifactId>swagger-annotations</artifactId>-->
-<!--                <version>1.5.20</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.spring4all</groupId>-->
-<!--                <artifactId>swagger-spring-boot-starter</artifactId>-->
-<!--                <version>1.9.0.RELEASE</version>-->
-<!--            </dependency>-->
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${springdoc-openapi.version}</version>
-<!--                <exclusions>-->
-<!--                    <exclusion>-->
-<!--                        <groupId>org.webjars</groupId>-->
-<!--                        <artifactId>swagger-ui</artifactId>-->
-<!--                    </exclusion>-->
-<!--                </exclusions>-->
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>org.webjars</groupId>-->
-<!--                <artifactId>swagger-ui</artifactId>-->
-<!--                <version>5.10.3</version>-->
-<!--            </dependency>-->
             <!--okhttp -->
             <dependency>
                 <groupId>com.squareup.okhttp3</groupId>
@@ -203,15 +182,10 @@
                 <version>${elasticsearch.version}</version>
             </dependency>
             <dependency>
-                <groupId>co.elastic.clients</groupId>
-                <artifactId>elasticsearch-java</artifactId>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
                 <version>${elasticsearch.version}</version>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-starter-data-elasticsearch</artifactId>-->
-<!--                <version>3.2.1</version>-->
-<!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 

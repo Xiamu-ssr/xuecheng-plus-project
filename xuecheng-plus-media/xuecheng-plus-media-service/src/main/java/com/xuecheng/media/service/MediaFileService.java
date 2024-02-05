@@ -29,14 +29,16 @@ public interface MediaFileService {
 
 
     /**
+     * 上载
      * upload file
      *
      * @param companyId     公司id
      * @param dto           dto
      * @param localFilePath 本地文件路径
+     * @param objectNameP   指定的objectName
      * @return {@link UploadFileResultDto}
      */
-    public UploadFileResultDto upload(Long companyId, UploadFileParamsDto dto, String localFilePath);
+    public UploadFileResultDto upload(Long companyId, UploadFileParamsDto dto, String localFilePath, String objectName);
 
     /**
      * 从minio下载文件

@@ -23,6 +23,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,14 +88,16 @@ public class MediaFileServiceImpl implements MediaFileService {
     }
 
     @Override
-    public UploadFileResultDto upload(Long companyId, UploadFileParamsDto dto, String localFilePath) {
+    public UploadFileResultDto upload(Long companyId, UploadFileParamsDto dto, String localFilePath, String objectName) {
         //upload file to minio
         String filename = dto.getFilename();
         String extension = filename.substring(filename.lastIndexOf("."));
         String mimeType = getMimeType(extension);
         String folderPath = getDefaultFolderPath();
         String fileMd5 = getFileMd5(localFilePath);
-        String objectName = folderPath + fileMd5 + extension;
+        if (StringUtils.isEmpty(objectName)){
+            objectName = folderPath + fileMd5 + extension;
+        }
         boolean result = upload2Minio(localFilePath, bucket_mediafiles, objectName, mimeType);
         if (!result){
             XueChengPlusException.cast("upload file Fail.");
