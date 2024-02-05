@@ -1,17 +1,35 @@
 package com.xuecheng.content.service.jobhandler;
 
 
+import com.xuecheng.base.exception.XueChengPlusException;
+import com.xuecheng.content.mapper.CoursePublishMapper;
+import com.xuecheng.content.model.po.CoursePublish;
+import com.xuecheng.content.service.CoursePublishService;
+import com.xuecheng.feign.client.SearchClient;
+import com.xuecheng.feign.pojo.CourseIndex;
 import com.xuecheng.messagesdk.model.po.MqMessage;
 import com.xuecheng.messagesdk.service.MessageProcessAbstract;
 import com.xuecheng.messagesdk.service.MqMessageService;
+
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
 
 @Component
 @Slf4j
 public class CoursePublishTask extends MessageProcessAbstract {
+
+    @Autowired
+    SearchClient searchClient;
+    @Autowired
+    CoursePublishService coursePublishService;
+    @Autowired
+    CoursePublishMapper coursePublishMapper;
 
     @XxlJob("CoursePublishJobHandler")
     public void CoursePublishJobHandler(){
@@ -53,7 +71,12 @@ public class CoursePublishTask extends MessageProcessAbstract {
             return;
         }
         //处理开始
-        //todo
+        File file = coursePublishService.generateCourseHtml(courseId);
+        if (file == null){
+            log.error("生成静态页面为空, taskId:{}, courseId:{}",taskId, courseId);
+            XueChengPlusException.cast("生成静态页面为空");
+        }
+        coursePublishService.uploadCourseHtml(courseId, file);
         //处理完成修改对应数据状态
         mqMessageService.completedStageOne(taskId);
     }
@@ -75,7 +98,13 @@ public class CoursePublishTask extends MessageProcessAbstract {
             return;
         }
         //处理开始
-        //todo
+        CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
+        CourseIndex courseIndex = new CourseIndex();
+        BeanUtils.copyProperties(coursePublish, courseIndex);
+        Boolean add = searchClient.add(courseIndex);
+        if (!add){
+            XueChengPlusException.cast("远程调用搜索服务添加课程索引失败");
+        }
         //处理完成修改对应数据状态
         mqMessageService.completedStageTwo(taskId);
     }

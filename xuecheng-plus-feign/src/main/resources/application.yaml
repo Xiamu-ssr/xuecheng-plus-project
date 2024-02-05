@@ -1,0 +1,68 @@
+logging:
+  config: classpath:log4j2-dev.xml
+  level:
+    org:
+    springframework:
+      boot: INFO
+
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 10000
+            readTimeout: 10000
+            loggerLevel: basic
+    circuitbreaker:
+      enabled: true
+      alphanumeric-ids:
+        enabled: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      media-api:
+        minimumNumberOfCalls: 3
+        slidingWindowSize: 10 # 设置滑动窗口的大小
+        waitDurationInOpenState: 50000 # 断路器从开启状态转换到半开状态的时间（毫秒）
+        failureRateThreshold: 50 # 失败率阈值
+        recordExceptions:
+          - java.lang.Throwable # 配置记录哪些异常
+  timelimiter:
+    instances:
+      media-api:
+        timeoutDuration: 3s
+#feign:
+#  hystrix:
+#    enabled: true
+
+#hystrix:
+#  command:
+#    default:
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: 3000
+#ribbon:
+#  ConnectTimeout: 60000
+#  ReadTimeout: 60000
+#  MaxAutoRetries: 0
+#  MaxAutoRetriesNextServer: 1
+#resilience4j:
+#  circuitbreaker:
+#    configs:
+#      default:
+#        slidingWindowSize: 100
+#        permittedNumberOfCallsInHalfOpenState: 10
+#        failureRateThreshold: 50
+#        waitDurationInOpenState: 10000
+#        minimumNumberOfCalls: 10
+#        slidingWindowType: COUNT_BASED
+#resilience4j:
+#  circuitbreaker:
+#    configs:
+#      default:
+#        failureRateThreshold: 50 # 触发熔断的失败率阈值（百分比）
+#        waitDurationInOpenState: 1000 # 熔断器从打开到半开的等待时间（毫秒）
+#        minimumNumberOfCalls: 5 # 在计算失败率前所需的最小调用次数

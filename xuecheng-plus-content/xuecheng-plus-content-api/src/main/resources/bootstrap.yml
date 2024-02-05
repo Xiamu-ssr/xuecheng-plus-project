@@ -1,4 +1,3 @@
-#微服务配置
 spring:
   application:
     name: content-api
@@ -28,3 +27,12 @@ spring:
           - data-id: freemarker-config-${spring.profiles.active}.yaml
             group: xuecheng-plus-common
             refresh: true
+#          - data-id: feign-${spring.profiles.active}.yaml
+#            group: xuecheng-plus-common
+#            refresh: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, circuitbreakers

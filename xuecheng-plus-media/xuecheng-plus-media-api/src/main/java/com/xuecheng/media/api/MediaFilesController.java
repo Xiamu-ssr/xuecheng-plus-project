@@ -43,7 +43,10 @@ public class MediaFilesController {
 
     @Operation(description = "upload pic")
     @RequestMapping(value = "/upload/coursefile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public UploadFileResultDto upload(@RequestPart("filedata")MultipartFile file) throws IOException {
+    public UploadFileResultDto upload(
+            @RequestPart("filedata")MultipartFile file,
+            @RequestParam(value = "objectName", required = false) String objectName
+    ) throws IOException, InterruptedException {
         Long companyId = 1232141425L;
 
         File tempFile = File.createTempFile(UUID.randomUUID().toString(), ".temp");
@@ -55,7 +58,7 @@ public class MediaFilesController {
         dto.setFileSize(file.getSize());
         dto.setFileType("001001");
 
-        return mediaFileService.upload(companyId, dto, localFilePath);
+        return mediaFileService.upload(companyId, dto, localFilePath, objectName);
     }
 
 }

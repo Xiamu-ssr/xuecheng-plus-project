@@ -14,22 +14,19 @@
             <groupId>com.xuecheng</groupId>
             <artifactId>xuecheng-plus-content-model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>com.baomidou</groupId>-->
-<!--                    <artifactId>mybatis-plus-boot-starter</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
         </dependency>
+        <!-- 测试 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- springcloud环境 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
+        <!-- javaweb + 日志 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -44,6 +41,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
+        <!-- xxl-job分布式事务sdk -->
         <dependency>
             <groupId>com.xuecheng</groupId>
             <artifactId>xuecheng-plus-message-sdk</artifactId>
@@ -58,6 +56,16 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>-->
+<!--        </dependency>-->
+        <!-- feign远程调用 -->
+        <dependency>
+            <groupId>com.xuecheng</groupId>
+            <artifactId>xuecheng-plus-feign</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
