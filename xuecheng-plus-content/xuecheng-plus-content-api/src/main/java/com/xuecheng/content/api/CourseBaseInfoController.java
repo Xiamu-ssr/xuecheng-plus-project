@@ -10,6 +10,7 @@ import com.xuecheng.content.model.dto.EditCourseDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
 import com.xuecheng.content.service.CourseBaseInfoService;
+import com.xuecheng.content.util.SecurityUtil;
 import com.xuecheng.feign.client.MediaClient;
 import com.xuecheng.media.model.dto.UploadFileResultDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,6 +56,9 @@ public class CourseBaseInfoController {
     @Operation(description = "根据课程id查询课程信息")
     @GetMapping("/course/{courseId}")
     public CourseBaseInfoDto getCourseBaseById(@PathVariable Long courseId){
+        SecurityUtil.XcUser xcUser = SecurityUtil.getUser();
+        System.out.println(xcUser.getUsername());
+        System.out.println(xcUser.toString());
         return courseBaseInfoService.getCourseBaseById(courseId);
     }
 
