@@ -12,6 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -34,6 +37,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
@@ -87,7 +91,6 @@ public class AuthServerSecurityConfig {
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .oidc(Customizer.withDefaults());	// Enable OpenID Connect 1.0
         http
-
                 // Redirect to the login page when not authenticated from the
                 // authorization endpoint
                 .exceptionHandling((exceptions) -> exceptions
@@ -112,11 +115,20 @@ public class AuthServerSecurityConfig {
                                 authorize
                                         .requestMatchers(new AntPathRequestMatcher("/actuator/**")).permitAll()
                                         .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
+                                        .requestMatchers(new AntPathRequestMatcher("/logout")).permitAll()
+                                        .requestMatchers(new AntPathRequestMatcher("/wxLogin")).permitAll()
+                                        .requestMatchers(new AntPathRequestMatcher("/custom-logout")).permitAll()
                                         .requestMatchers(new AntPathRequestMatcher("/oauth2/**")).permitAll()
                                         .requestMatchers(new AntPathRequestMatcher("/**/*.html")).permitAll()
                                         .requestMatchers(new AntPathRequestMatcher("/**/*.json")).permitAll()
                                         .requestMatchers(new AntPathRequestMatcher("/auth/**")).permitAll()
                         .anyRequest().authenticated()
+//                        .anyRequest().permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .addLogoutHandler(new SecurityContextLogoutHandler())
+                        .logoutSuccessUrl("http://www.51xuecheng.cn")
                 )
                 .formLogin(Customizer.withDefaults())
                 .oauth2ResourceServer(oauth2 -> oauth2
@@ -156,6 +168,8 @@ public class AuthServerSecurityConfig {
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .redirectUri("http://www.51xuecheng.cn")
+                .redirectUri("http://localhost:63070/auth/wxLogin")
+                .redirectUri("http://www.51xuecheng.cn/sign.html")
 //                .postLogoutRedirectUri("http://localhost:63070/login?logout")
                 .scope("all")
                 .scope(OidcScopes.OPENID)

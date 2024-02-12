@@ -43,7 +43,9 @@ public class UserServiceImpl implements UserDetailsService {
         //加载s到dto
         AuthParamsDto authParamsDto = new AuthParamsDto();
         try {
-            authParamsDto = JSON.parseObject(s, AuthParamsDto.class);
+//            authParamsDto = JSON.parseObject(s, AuthParamsDto.class);
+            authParamsDto.setUsername(s);
+            authParamsDto.setAuthType("password");
         } catch (Exception e) {
             throw new RuntimeException("用户信息异常,认证请求数据格式不对");
         }
@@ -55,7 +57,8 @@ public class UserServiceImpl implements UserDetailsService {
         }else if (authType.equals("wx")){
             xcUserExt = wxAuthService.execute(authParamsDto);
         }else {
-            throw new RuntimeException("不支持的验证类型");
+            xcUserExt = passwordAuthService.execute(authParamsDto);
+//            throw new RuntimeException("不支持的验证类型");
         }
         return getUserPrincipal(xcUserExt);
     }

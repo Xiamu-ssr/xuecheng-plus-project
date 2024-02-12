@@ -19,19 +19,19 @@ public class PasswordAuthServiceImpl implements AuthService {
 
     @Override
     public XcUserExt execute(AuthParamsDto authParamsDto) {
-        throw new RuntimeException("不支持密码登录");
-//        if (StringUtils.isEmpty( authParamsDto.getUsername())) {
-//            throw new RuntimeException("用户信息异常,无用户名");
-//        }
-//        //根据username查询数据库
-//        XcUser xcUser = xcUserMapper.selectOne(new LambdaQueryWrapper<XcUser>()
-//                .eq(XcUser::getUsername, authParamsDto.getUsername()));
-//        //用户不存在，返回null
-//        if (xcUser == null){
-//            throw new RuntimeException("账号不存在");
-//        }
-//        XcUserExt xcUserExt = new XcUserExt();
-//        BeanUtils.copyProperties(xcUser, xcUserExt);
-//        return xcUserExt;
+//        throw new RuntimeException("不支持密码登录");
+        if (StringUtils.isEmpty( authParamsDto.getUsername())) {
+            throw new RuntimeException("用户信息异常,无用户名");
+        }
+        //根据username查询数据库
+        XcUser xcUser = xcUserMapper.selectOne(new LambdaQueryWrapper<XcUser>()
+                .eq(XcUser::getUsername, authParamsDto.getUsername()));
+        //用户不存在，返回null
+        if (xcUser == null){
+            throw new RuntimeException("账号不存在");
+        }
+        XcUserExt xcUserExt = new XcUserExt();
+        BeanUtils.copyProperties(xcUser, xcUserExt);
+        return xcUserExt;
     }
 }
