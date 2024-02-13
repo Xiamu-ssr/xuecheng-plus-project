@@ -1,5 +1,6 @@
 package com.xuecheng.auth.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.xuecheng.ucenter.mapper.XcUserMapper;
 import com.xuecheng.ucenter.model.po.XcUser;
 import com.xuecheng.ucenter.service.WxAuthService;
@@ -10,12 +11,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Mr.M
@@ -31,6 +34,10 @@ public class LoginController {
     XcUserMapper userMapper;
     @Autowired
     WxAuthService wxAuthService;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
+    XcUserMapper xcUserMapper;
 
 
     @RequestMapping("/login-success")
@@ -67,13 +74,28 @@ public class LoginController {
         return wxAuthService.wxAuth(code);
     }
 
-    @GetMapping("/custom-logout")
+    @PostMapping("/register")
     @CrossOrigin("*")
-    public void logoutPage(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        if (authentication != null) {
-            new SecurityContextLogoutHandler().logout(request, response, authentication);
+    public void register(@RequestBody XcUser dto){
+        //验证username唯一性
+        XcUser xcUser = xcUserMapper.selectOne(new LambdaQueryWrapper<XcUser>().eq(XcUser::getUsername, dto.getUsername()));
+        if (xcUser != null){
+            throw new RuntimeException("存在相同账户名，请更换");
         }
-        // 重定向到登录页面或者其他页面
-//        return "redirect:http://www.51xuecheng.cn/";
+
+        dto.setId(UUID.randomUUID().toString());
+        dto.setWxUnionid("test");
+        dto.setName(dto.getUsername());
+        dto.setUtype("101001");
+        dto.setStatus("1");
+        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+        System.out.println(dto);
+        int insert = xcUserMapper.insert(dto);
+        if (insert > 0){
+            return;
+        }else {
+            throw new RuntimeException("添加用户失败");
+        }
     }
+
 }

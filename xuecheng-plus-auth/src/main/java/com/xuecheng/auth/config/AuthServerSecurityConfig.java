@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
@@ -117,7 +118,7 @@ public class AuthServerSecurityConfig {
                                         .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
                                         .requestMatchers(new AntPathRequestMatcher("/logout")).permitAll()
                                         .requestMatchers(new AntPathRequestMatcher("/wxLogin")).permitAll()
-                                        .requestMatchers(new AntPathRequestMatcher("/custom-logout")).permitAll()
+                                        .requestMatchers(new AntPathRequestMatcher("/register")).permitAll()
                                         .requestMatchers(new AntPathRequestMatcher("/oauth2/**")).permitAll()
                                         .requestMatchers(new AntPathRequestMatcher("/**/*.html")).permitAll()
                                         .requestMatchers(new AntPathRequestMatcher("/**/*.json")).permitAll()
@@ -125,6 +126,7 @@ public class AuthServerSecurityConfig {
                         .anyRequest().authenticated()
 //                        .anyRequest().permitAll()
                 )
+                .csrf(AbstractHttpConfigurer::disable)
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .addLogoutHandler(new SecurityContextLogoutHandler())
