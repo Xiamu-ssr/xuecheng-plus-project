@@ -55,3 +55,9 @@
 1. ElasticSearch + Kibana 部署
 2. 认证授权Demo
 3. 完善课程发布
+
+# Stage 10
+1. Oauth2.1 认证服务器搭建
+2. 注册，登录完善
+3. JWT完善
+4. 修复页面

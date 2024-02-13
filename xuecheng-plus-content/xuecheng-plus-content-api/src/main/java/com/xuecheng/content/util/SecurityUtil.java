@@ -18,12 +18,15 @@ import java.util.Map;
 public class SecurityUtil {
     public static XcUser getUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null){
+            return null;
+        }
         if (authentication instanceof JwtAuthenticationToken) {
             JwtAuthenticationToken jwtAuth = (JwtAuthenticationToken) authentication;
+            System.out.println(jwtAuth);
             Map<String, Object> tokenAttributes = jwtAuth.getTokenAttributes();
+            System.out.println(tokenAttributes);
             Object sub = tokenAttributes.get("sub");
-//            System.out.println(sub.toString());
-//            System.out.println(JSON.toJSON(sub));
             return JSON.parseObject(sub.toString(), XcUser.class);
         }
         return null;

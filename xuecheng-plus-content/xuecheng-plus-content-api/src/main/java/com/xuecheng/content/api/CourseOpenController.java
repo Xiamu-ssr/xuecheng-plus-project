@@ -30,8 +30,9 @@ public class CourseOpenController {
 
     @GetMapping("/course/whole/{courseId}")
     public CoursePreviewDto getPreviewInfo(@PathVariable("courseId") Long courseId) {
-        SecurityUtil.XcUser xcUser = SecurityUtil.getUser();
-        System.out.println(xcUser.getUsername());
+//        SecurityUtil.XcUser xcUser = SecurityUtil.getUser();
+//        System.out.println(xcUser.getUsername());
+        System.out.println("666");
         //获取课程预览信息
         return coursePublishService.getCoursePreviewInfo(courseId);
     }
