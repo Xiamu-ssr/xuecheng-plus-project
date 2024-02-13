@@ -50,3 +50,8 @@
 2. 分布式理念
 3. 分布式事务sdk
 4. xxl-job任务抽取
+
+# Stage 09
+1. ElasticSearch + Kibana 部署
+2. 认证授权Demo
+3. 完善课程发布
