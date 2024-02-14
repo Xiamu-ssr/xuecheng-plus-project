@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Mr.M
+ * @author mumu
  * @version 1.0
  * @description 认证用户请求参数
  * @date 2022/9/29 10:56

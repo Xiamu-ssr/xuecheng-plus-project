@@ -24,7 +24,7 @@ import java.io.IOException;
 
 /**
  * @description 课程索引管理接口实现
- * @author Mr.M
+ * @author mumu
  * @date 2022/9/25 7:23
  * @version 1.0
  */

@@ -17,6 +17,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,11 +50,14 @@ public class CourseBaseInfoController {
             PageParams pageParams,
             @Parameter(description = "请求具体内容") @RequestBody(required = false) QueryCourseParamsDto dto){
         SecurityUtil.XcUser xcUser = SecurityUtil.getUser();
-        if (xcUser != null){
-            System.out.println(xcUser.getUsername());
-            System.out.println(xcUser.toString());
+        if (ObjectUtils.isEmpty(xcUser)){
+            XueChengPlusException.cast("JWT异常");
         }
-        return courseBaseInfoService.queryCourseBaseList(pageParams, dto);
+        Long companyId = null;
+        if (StringUtils.isNotEmpty(xcUser.getCompanyId())){
+            companyId = Long.valueOf(xcUser.getCompanyId());
+        }
+        return courseBaseInfoService.queryCourseBaseList(companyId, pageParams, dto);
     }
 
     @Operation(summary = "新增课程基础信息")

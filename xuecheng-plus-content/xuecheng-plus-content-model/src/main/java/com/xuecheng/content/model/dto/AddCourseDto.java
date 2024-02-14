@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 
 /**
  * @description 添加课程dto
- * @author Mr.M
+ * @author mumu
  * @date 2022/9/7 17:40
  * @version 1.0
  */
