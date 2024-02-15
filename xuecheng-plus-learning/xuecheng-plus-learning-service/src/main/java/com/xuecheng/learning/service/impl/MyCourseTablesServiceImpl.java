@@ -130,7 +130,7 @@ public class MyCourseTablesServiceImpl implements MyCourseTablesService {
      * @return {@link XcChooseCourse}
      */
     private XcChooseCourse addChargeCourse(String userId, CoursePublish coursePublish){
-        //如果存在免费的选课记录并且选课状态为成功，直接返回
+        //如果存在选课记录并且选课状态为成功，直接返回
         Long courseId = coursePublish.getId();
 
         List<XcChooseCourse> xcChooseCourses = xcChooseCourseMapper.selectList(new LambdaQueryWrapper<XcChooseCourse>()

@@ -7,10 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author mumu
@@ -42,6 +39,12 @@ public class CourseIndexController {
             XueChengPlusException.cast("添加课程索引失败");
         }
         return result;
-
     }
+
+    @Operation(description = "删除课程索引")
+    @DeleteMapping("course/{id}")
+    public Boolean delete(@PathVariable String id){
+        return indexService.deleteCourseIndex(courseIndexStore, id);
+    }
+
 }

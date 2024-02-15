@@ -15,10 +15,8 @@ import com.xuecheng.media.model.dto.UploadFileResultDto;
 import com.xuecheng.media.model.po.MediaFiles;
 import com.xuecheng.media.model.po.MediaProcess;
 import com.xuecheng.media.service.MediaFileService;
-import io.minio.GetObjectArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
-import io.minio.UploadObjectArgs;
+import io.minio.*;
+import io.minio.errors.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -35,6 +33,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -227,6 +227,24 @@ public class MediaFileServiceImpl implements MediaFileService {
         } catch (Exception e) {
             e.printStackTrace();
             log.error("upload file error, bucket:{}, objectName:{}, errMessage:{}", bucket, objectName, e.getMessage());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteStaticHtml4Minio(Long courseId) {
+        String objectName = "course/" + courseId + ".html";
+        RemoveObjectArgs removeObjectArgs = RemoveObjectArgs.builder()
+                .bucket(bucket_mediafiles)
+                .object(objectName)
+                .build();
+        try {
+            minioClient.removeObject(removeObjectArgs);
+            log.info("remove file from Minio Success, bucket:{}, objectName:{}", bucket_mediafiles, objectName);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("remove file error, bucket:{}, objectName:{}, errMessage:{}", bucket_mediafiles, objectName, e.getMessage());
         }
         return false;
     }

@@ -19,7 +19,7 @@ public class SecurityUtil {
     public static XcUser getUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null){
-            return null;
+            throw new RuntimeException("JWT异常");
         }
         if (authentication instanceof JwtAuthenticationToken) {
             JwtAuthenticationToken jwtAuth = (JwtAuthenticationToken) authentication;
@@ -29,7 +29,7 @@ public class SecurityUtil {
             Object sub = tokenAttributes.get("sub");
             return JSON.parseObject(sub.toString(), XcUser.class);
         }
-        return null;
+        throw new RuntimeException("JWT异常");
     }
     @Data
     public static class XcUser implements Serializable {

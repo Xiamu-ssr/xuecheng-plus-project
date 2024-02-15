@@ -26,13 +26,18 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * 支付测试
+ *
+ * @author mumu
+ * @date 2024/02/15
+ */
 @Controller
 public class PayTestController {
     @Value("${pay.alipay.APP_ID}")
     String APP_ID;
     @Value("${pay.alipay.APP_PRIVATE_KEY}")
     String APP_PRIVATE_KEY;
-
     @Value("${pay.alipay.ALIPAY_PUBLIC_KEY}")
     String ALIPAY_PUBLIC_KEY;
 
@@ -133,16 +138,5 @@ public class PayTestController {
             System.out.println("fail");
             response.getWriter().write("fail");
         }
-    }
-
-    @Operation(description = "查询支付结果")
-    @GetMapping("/payresult")
-    @ResponseBody
-    public PayRecordDto payresult(String payNo) throws IOException {
-
-        //查询支付结果
-
-        return null;
-
     }
 }

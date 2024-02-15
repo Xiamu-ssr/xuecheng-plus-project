@@ -1,6 +1,7 @@
 package com.xuecheng.content.service.impl;
 
 import com.alibaba.fastjson2.JSON;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.xuecheng.base.exception.XueChengPlusException;
 import com.xuecheng.content.mapper.*;
 import com.xuecheng.content.model.dto.CourseBaseInfoDto;
@@ -144,6 +145,11 @@ public class CoursePublishServiceImpl implements CoursePublishService {
             BeanUtils.copyProperties(coursePublishPre, coursePublish);
             coursePublishMapper.updateById(coursePublish);
         }
+        //同步到course_base
+        courseBaseMapper.update(new LambdaUpdateWrapper<CourseBase>()
+                .eq(CourseBase::getId, courseId)
+                .set(CourseBase::getStatus, "203002")
+        );
         //向mq_message写入数据
         mqMessageService.addMessage("course_publish", courseId.toString(), null, null);
 
