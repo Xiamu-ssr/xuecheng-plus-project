@@ -17,8 +17,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,13 +40,24 @@ public class CourseBaseInfoController {
     @Autowired
     MediaClient mediaClient;
 
+
+//    @PreAuthorize("hasAuthority('read')")
+    @PreAuthorize("hasAuthority('xc_teachmanager_course_list')")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved user")
     @Operation(summary = "查询课程信息列表")
     @PostMapping("/course/list")
     public PageResult<CourseBase> list(
             PageParams pageParams,
             @Parameter(description = "请求具体内容") @RequestBody(required = false) QueryCourseParamsDto dto){
-        return courseBaseInfoService.queryCourseBaseList(pageParams, dto);
+        SecurityUtil.XcUser xcUser = SecurityUtil.getUser();
+        if (ObjectUtils.isEmpty(xcUser)){
+            XueChengPlusException.cast("JWT异常");
+        }
+        Long companyId = null;
+        if (StringUtils.isNotEmpty(xcUser.getCompanyId())){
+            companyId = Long.valueOf(xcUser.getCompanyId());
+        }
+        return courseBaseInfoService.queryCourseBaseList(companyId, pageParams, dto);
     }
 
     @Operation(summary = "新增课程基础信息")
@@ -56,9 +70,9 @@ public class CourseBaseInfoController {
     @Operation(description = "根据课程id查询课程信息")
     @GetMapping("/course/{courseId}")
     public CourseBaseInfoDto getCourseBaseById(@PathVariable Long courseId){
-        SecurityUtil.XcUser xcUser = SecurityUtil.getUser();
-        System.out.println(xcUser.getUsername());
-        System.out.println(xcUser.toString());
+//        SecurityUtil.XcUser xcUser = SecurityUtil.getUser();
+//        System.out.println(xcUser.getUsername());
+//        System.out.println(xcUser.toString());
         return courseBaseInfoService.getCourseBaseById(courseId);
     }
 

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +32,10 @@ public class GlobalExceptionHandler {
     public RestErrorResponse exception(Exception e){
         //record log
         log.error("系统异常{}", e.getMessage(),e);
-        //decode errorException
+
+        if (e.getMessage().equals("Access Denied")){
+            return new RestErrorResponse("权限不足");
+        }
         String errMessage = CommonError.UNKOWN_ERROR.getErrMessage();
         return new RestErrorResponse(errMessage);
     }
@@ -47,5 +51,6 @@ public class GlobalExceptionHandler {
 
         return new RestErrorResponse(errMessage);
     }
+
 
 }

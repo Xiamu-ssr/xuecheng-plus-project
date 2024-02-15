@@ -3,12 +3,15 @@ package com.xuecheng.ucenter.service.impl;
 
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.xuecheng.ucenter.mapper.XcMenuMapper;
 import com.xuecheng.ucenter.mapper.XcUserMapper;
 import com.xuecheng.ucenter.model.dto.AuthParamsDto;
 import com.xuecheng.ucenter.model.dto.XcUserExt;
+import com.xuecheng.ucenter.model.po.XcMenu;
 import com.xuecheng.ucenter.model.po.XcUser;
 import com.xuecheng.ucenter.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,6 +20,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -29,6 +36,9 @@ public class UserServiceImpl implements UserDetailsService {
     @Autowired
     @Qualifier("wx_authservice")
     private AuthService wxAuthService; // 这将注入PasswordAuthServiceImpl的实例
+
+    @Autowired
+    XcMenuMapper xcMenuMapper;
 
 
     /**
@@ -65,13 +75,18 @@ public class UserServiceImpl implements UserDetailsService {
 
     public UserDetails getUserPrincipal(XcUserExt user){
         //用户权限,如果不加报Cannot pass a null GrantedAuthority collection
-        String[] authorities = {"read"};
-        String password = user.getPassword();
+        List<XcMenu> xcMenus = xcMenuMapper.selectPermissionByUserId(user.getId());
+        String[] permissions = {"read"};
+        if (ObjectUtils.isNotEmpty(xcMenus)){
+            permissions = xcMenus.stream().map(XcMenu::getCode).toList().toArray(String[]::new);
+            log.info("权限如下:{}", Arrays.toString(permissions));
+        }
         //为了安全在令牌中不放密码
+        String password = user.getPassword();
         user.setPassword(null);
         //将user对象转json
         String userString = JSON.toJSONString(user);
         //创建UserDetails对象
-        return User.withUsername(userString).password(password).authorities(authorities).build();
+        return User.withUsername(userString).password(password).authorities(permissions).build();
     }
 }

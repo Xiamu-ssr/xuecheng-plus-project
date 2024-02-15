@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 /**
- * @author Mr.M
+ * @author mumu
  * @version 1.0
  * @description 媒资文件管理接口
  * @date 2022/9/6 11:29

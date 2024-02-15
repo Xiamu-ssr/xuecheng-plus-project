@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 public interface CourseBaseInfoService {
     //课程分页查询
-    public PageResult<CourseBase> queryCourseBaseList(PageParams pageParams, QueryCourseParamsDto dto);
+    public PageResult<CourseBase> queryCourseBaseList(Long companyId, PageParams pageParams, QueryCourseParamsDto dto);
 
     public CourseBaseInfoDto createCourseBase(Long companyId, AddCourseDto dto);
 

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author Mr.M
+ * @author mumu
  * @version 1.0
  * @description 课程搜索接口
  * @date 2022/9/24 22:31

@@ -10,7 +10,7 @@ import com.xuecheng.media.model.po.MediaFiles;
 import java.io.File;
 
 /**
- * @author Mr.M
+ * @author mumu
  * @version 1.0
  * @description 媒资文件管理业务类
  * @date 2022/9/10 8:55
@@ -22,7 +22,7 @@ public interface MediaFileService {
      * @param queryMediaParamsDto 查询条件
      * @return com.xuecheng.base.model.PageResult<com.xuecheng.media.model.po.MediaFiles>
      * @description 媒资文件查询方法
-     * @author Mr.M
+     * @author mumu
      * @date 2022/9/10 8:57
      */
     public PageResult<MediaFiles> queryMediaFiels(Long companyId, PageParams pageParams, QueryMediaParamsDto queryMediaParamsDto);

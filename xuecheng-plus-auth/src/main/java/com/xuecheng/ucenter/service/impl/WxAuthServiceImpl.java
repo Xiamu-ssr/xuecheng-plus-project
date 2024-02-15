@@ -46,11 +46,8 @@ public class WxAuthServiceImpl implements AuthService, WxAuthService {
                 .build();
         try {
             Response response = client.newCall(request).execute();
-            System.out.println(response);
             String result = response.body().string();
-            System.out.println(result);
             Map map = JSON.parseObject(result, Map.class);
-            System.out.println(map);
             return map;
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -1,6 +1,7 @@
 package com.xuecheng.content.service;
 
 import com.xuecheng.content.model.dto.CoursePreviewDto;
+import com.xuecheng.content.model.po.CoursePublish;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.File;
@@ -44,4 +45,13 @@ public interface CoursePublishService {
      * @return void
      */
     public void  uploadCourseHtml(Long courseId,File file);
+
+
+    /**
+     * 根据courseId获取课程发布表数据
+     *
+     * @param courseId 课程id
+     * @return {@link CoursePublish}
+     */
+    public CoursePublish getCoursePublish(Long courseId);
 }

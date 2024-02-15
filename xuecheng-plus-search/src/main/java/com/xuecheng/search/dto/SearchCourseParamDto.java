@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 /**
- * @author Mr.M
+ * @author mumu
  * @version 1.0
  * @description 搜索课程参数dtl
  * @date 2022/9/24 22:36
