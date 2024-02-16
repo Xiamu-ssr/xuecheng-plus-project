@@ -18,5 +18,8 @@ public interface MediaClient {
 
     @GetMapping("/preview/{mediaId}")
     public RestResponse<String> getPlayUrlByMediaId(@PathVariable String mediaId);
+
+    @DeleteMapping("/delete/staticHtml/{courseId}")
+    public boolean deleteStaticHtml4Minio(@PathVariable Long courseId);
 }
 

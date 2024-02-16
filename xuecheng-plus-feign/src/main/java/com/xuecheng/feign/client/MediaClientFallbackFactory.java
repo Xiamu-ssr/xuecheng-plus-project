@@ -27,6 +27,13 @@ public class MediaClientFallbackFactory implements FallbackFactory<MediaClient> 
                 System.out.println("远程调用发送熔断,");
                 return null;
             }
+
+            @Override
+            public boolean deleteStaticHtml4Minio(Long courseId) {
+                log.error("远程调用发送熔断,:{}，", cause.toString());
+                System.out.println("远程调用发送熔断,");
+                return false;
+            }
         };
     }
 }

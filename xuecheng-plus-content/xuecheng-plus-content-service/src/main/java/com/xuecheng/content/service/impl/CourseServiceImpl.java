@@ -1,10 +1,13 @@
 package com.xuecheng.content.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.xuecheng.base.exception.XueChengPlusException;
 import com.xuecheng.content.mapper.*;
 import com.xuecheng.content.model.po.*;
 import com.xuecheng.content.service.CourseService;
+import com.xuecheng.feign.client.MediaClient;
+import com.xuecheng.messagesdk.service.MqMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class CourseServiceImpl implements CourseService {
     @Autowired
+    MediaClient mediaClient;
+
+    @Autowired
     CourseBaseMapper courseBaseMapper;
+    @Autowired
+    CoursePublishMapper coursePublishMapper;
+    @Autowired
+    CoursePublishPreMapper coursePublishPreMapper;
     @Autowired
     CourseMarketMapper courseMarketMapper;
     @Autowired
@@ -24,6 +34,9 @@ public class CourseServiceImpl implements CourseService {
     TeachplanMediaMapper teachplanMediaMapper;
     @Autowired
     CourseTeacherMapper courseTeacherMapper;
+
+    @Autowired
+    MqMessageService mqMessageService;
 
     @Transactional
     @Override
@@ -64,6 +77,34 @@ public class CourseServiceImpl implements CourseService {
             return;
         }else {
             XueChengPlusException.cast("delete Course Fail.");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void offlineCourse(Long courseId) {
+        //约束
+        //只有已经发布的课程，且目前没有处于审核中的课程，才能下架
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        String status = courseBase.getStatus();
+        if ("203002".equals(status)){
+            CoursePublishPre coursePublishPre = coursePublishPreMapper.selectById(courseId);
+            if (coursePublishPre == null){
+                //同步到course_base
+                courseBaseMapper.update(new LambdaUpdateWrapper<CourseBase>()
+                        .eq(CourseBase::getId, courseId)
+                        .set(CourseBase::getAuditStatus, "202002")
+                        .set(CourseBase::getStatus, "203003")
+                );
+                //向mq_message写入数据
+                //mqMessageService.addMessage("course_offline", courseId.toString(), null, null);
+                //向course_publish删除数据
+                coursePublishMapper.deleteById(courseId);
+            }else {
+                XueChengPlusException.cast("正在审核的课程无法下架");
+            }
+        }else {
+            XueChengPlusException.cast("未发布课程无法下架");
         }
     }
 }

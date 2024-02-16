@@ -70,22 +70,28 @@
             <groupId>com.xuxueli</groupId>
             <artifactId>xxl-job-core</artifactId>
         </dependency>
-        <!-- 支付宝SDK -->
-        <!--<dependency>-->
-        <!--    <groupId>com.alipay.sdk</groupId>-->
-        <!--    <artifactId>alipay-sdk-java</artifactId>-->
-        <!--    <version>3.7.73.ALL</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>com.alipay.sdk</groupId>
             <artifactId>alipay-sdk-java</artifactId>
             <version>4.38.200.ALL</version>
         </dependency>
         <!-- 支付宝SDK依赖的日志 -->
+        <!--<dependency>-->
+        <!--    <groupId>commons-logging</groupId>-->
+        <!--    <artifactId>commons-logging</artifactId>-->
+        <!--    <version>1.2</version>-->
+        <!--</dependency>-->
+
+        <!--生成二维码-->
         <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.2</version>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.3.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.3.3</version>
         </dependency>
 
     </dependencies>

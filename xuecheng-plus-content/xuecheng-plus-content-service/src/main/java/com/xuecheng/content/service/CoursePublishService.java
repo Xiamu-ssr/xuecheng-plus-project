@@ -39,10 +39,13 @@ public interface CoursePublishService {
      * @return File 静态化文件
      */
     public File generateCourseHtml(Long courseId);
+
     /**
+     * 上传课程html到Minio
+     *
+     * @param file     静态化文件
+     * @param courseId 课程id
      * @description 上传课程静态化页面
-     * @param file  静态化文件
-     * @return void
      */
     public void  uploadCourseHtml(Long courseId,File file);
 

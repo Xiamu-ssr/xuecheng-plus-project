@@ -51,6 +51,16 @@ public interface MediaFileService {
 
     public boolean upload2Minio(String localFilePath, String bucket, String objectName, String mimeType);
 
+    /**
+     * 从Minio中删除静态html
+     * <br/>
+     * 用于下架课程
+     *
+     * @param courseId 课程id
+     * @return boolean
+     */
+    public boolean deleteStaticHtml4Minio(Long courseId);
+
     public MediaFiles upload2Mysql(String fileMd5, Long companyId, UploadFileParamsDto dto, String bucket, String objectName);
 
     /**

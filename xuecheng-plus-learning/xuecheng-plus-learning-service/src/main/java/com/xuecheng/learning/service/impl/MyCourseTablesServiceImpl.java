@@ -1,6 +1,7 @@
 package com.xuecheng.learning.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.xuecheng.base.exception.XueChengPlusException;
 import com.xuecheng.content.model.po.CoursePublish;
 import com.xuecheng.feign.client.ContentClient;
@@ -82,6 +83,29 @@ public class MyCourseTablesServiceImpl implements MyCourseTablesService {
         return xcCourseTablesDto;
     }
 
+    @Override
+    @Transactional
+    public boolean successChooseCourse(String chooseCourseId) {
+        XcChooseCourse chooseCourse = xcChooseCourseMapper.selectById(chooseCourseId);
+        if (chooseCourse == null){
+            log.error("接收到支付成功的消息，但是根据传来的选课id，找不到选课记录。chooseCourseId:{}", chooseCourseId);
+            return false;
+        }
+        if ("701002".equals(chooseCourse.getStatus())){
+            //更新选课记录表
+            chooseCourse.setStatus("701001");
+            int update = xcChooseCourseMapper.updateById(chooseCourse);
+            if (update <= 0){
+                log.error("修改选课记录失败：{}", chooseCourse);
+                XueChengPlusException.cast("修改选课记录失败");
+            }
+            //更新课程表
+            addCourseTables(chooseCourse);
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 添加免费课程到选课记录表
      *
@@ -130,14 +154,14 @@ public class MyCourseTablesServiceImpl implements MyCourseTablesService {
      * @return {@link XcChooseCourse}
      */
     private XcChooseCourse addChargeCourse(String userId, CoursePublish coursePublish){
-        //如果存在免费的选课记录并且选课状态为成功，直接返回
+        //如果存在选课记录并且选课状态为成功，直接返回
         Long courseId = coursePublish.getId();
 
         List<XcChooseCourse> xcChooseCourses = xcChooseCourseMapper.selectList(new LambdaQueryWrapper<XcChooseCourse>()
                 .eq(XcChooseCourse::getUserId, userId)
                 .eq(XcChooseCourse::getCourseId, courseId)
                 .eq(XcChooseCourse::getOrderType, "700002")//收费课程
-                .eq(XcChooseCourse::getStatus, "701001")//选课成功
+                .eq(XcChooseCourse::getStatus, "701002")//待支付
         );
         if(!CollectionUtils.isEmpty(xcChooseCourses)){
             return xcChooseCourses.get(0);

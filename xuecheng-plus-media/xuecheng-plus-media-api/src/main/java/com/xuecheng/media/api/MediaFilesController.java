@@ -61,4 +61,8 @@ public class MediaFilesController {
         return mediaFileService.upload(companyId, dto, localFilePath, objectName);
     }
 
+    @DeleteMapping("/delete/staticHtml/{courseId}")
+    public boolean deleteStaticHtml4Minio(@PathVariable Long courseId){
+        return mediaFileService.deleteStaticHtml4Minio(courseId);
+    }
 }
