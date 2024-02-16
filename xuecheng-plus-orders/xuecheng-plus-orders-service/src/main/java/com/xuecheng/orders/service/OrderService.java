@@ -1,7 +1,9 @@
 package com.xuecheng.orders.service;
 
+import com.xuecheng.messagesdk.model.po.MqMessage;
 import com.xuecheng.orders.model.dto.AddOrderDto;
 import com.xuecheng.orders.model.dto.PayRecordDto;
+import com.xuecheng.orders.model.dto.PayStatusDto;
 import com.xuecheng.orders.model.po.XcPayRecord;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -31,4 +33,20 @@ public interface OrderService {
      * @return {@link PayRecordDto}
      */
     public PayRecordDto queryPayResult(String payNo);
+
+    /**
+     * 保存支付状态
+     * <br/>
+     * 用于确认支付成功后执行，更新订单状态
+     *
+     * @param payStatusDto 支付状态dto
+     */
+    public void saveAliPayStatus(PayStatusDto payStatusDto);
+
+    /**
+     * 发送支付结果通知到rabbitmq
+     *
+     * @param message 消息
+     */
+    public void notifyPayResult(MqMessage message);
 }

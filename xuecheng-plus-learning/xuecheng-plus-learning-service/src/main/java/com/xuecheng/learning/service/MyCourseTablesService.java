@@ -22,4 +22,14 @@ public interface MyCourseTablesService {
      * @return {@link XcCourseTablesDto}
      */
     public XcCourseTablesDto getLearnstatus(String userId, Long courseId);
+
+    /**
+     * 保存选课状态为成功
+     * <br/>
+     * 用于支付成功后，rabbitmq消息接收后调用
+     *
+     * @param chooseCourseId 选择课程id
+     * @return boolean
+     */
+    public boolean successChooseCourse(String chooseCourseId);
 }
