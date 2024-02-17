@@ -67,3 +67,8 @@
 1. 授权体系
 2. 选课服务
 3. 支付demo
+
+# Stage 12
+1. 整合RabbitMQ
+2. 完善支付流程
+3. some bug fix

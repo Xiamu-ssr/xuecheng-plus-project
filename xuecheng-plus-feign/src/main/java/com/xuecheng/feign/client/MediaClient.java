@@ -16,7 +16,7 @@ public interface MediaClient {
             @RequestParam(value = "objectName", required = false) String objectName
     );
 
-    @GetMapping("/preview/{mediaId}")
+    @GetMapping("/open/preview/{mediaId}")
     public RestResponse<String> getPlayUrlByMediaId(@PathVariable String mediaId);
 
     @DeleteMapping("/delete/staticHtml/{courseId}")

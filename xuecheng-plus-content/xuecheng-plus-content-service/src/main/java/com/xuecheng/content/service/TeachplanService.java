@@ -33,4 +33,12 @@ public interface TeachplanService {
      * @param mediaId     媒体文件id
      */
     public void disAssociationMedia(Long teachPlanId, String mediaId);
+
+    /**
+     * 根据课程计划id判断是否支持试学
+     *
+     * @param teachplanId 教学计划id
+     * @return boolean
+     */
+    public boolean isTeachplanPreview(Long teachplanId);
 }

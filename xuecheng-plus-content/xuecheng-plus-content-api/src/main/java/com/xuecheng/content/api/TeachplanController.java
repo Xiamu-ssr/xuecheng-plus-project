@@ -68,4 +68,11 @@ public class TeachplanController {
         teachplanService.disAssociationMedia(teachPlanId, mediaId);
     }
 
+
+    @Operation(description = "指定课程计划是否支持试学")
+    @GetMapping("/teachplan/isPreview/{teachplanId}")
+    public boolean isTeachplanPreview(@PathVariable Long teachplanId){
+        return teachplanService.isTeachplanPreview(teachplanId);
+    }
+
 }

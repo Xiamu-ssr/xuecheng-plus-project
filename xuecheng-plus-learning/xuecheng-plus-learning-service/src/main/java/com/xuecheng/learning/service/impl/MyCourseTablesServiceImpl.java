@@ -2,11 +2,14 @@ package com.xuecheng.learning.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xuecheng.base.exception.XueChengPlusException;
+import com.xuecheng.base.model.PageResult;
 import com.xuecheng.content.model.po.CoursePublish;
 import com.xuecheng.feign.client.ContentClient;
 import com.xuecheng.learning.mapper.XcChooseCourseMapper;
 import com.xuecheng.learning.mapper.XcCourseTablesMapper;
+import com.xuecheng.learning.model.dto.MyCourseTableParams;
 import com.xuecheng.learning.model.dto.XcChooseCourseDto;
 import com.xuecheng.learning.model.dto.XcCourseTablesDto;
 import com.xuecheng.learning.model.po.XcChooseCourse;
@@ -79,7 +82,7 @@ public class MyCourseTablesServiceImpl implements MyCourseTablesService {
             return xcCourseTablesDto;
         }
         BeanUtils.copyProperties(xcCourseTables, xcCourseTablesDto);
-        xcCourseTablesDto.setLearnStatus("702003");
+        xcCourseTablesDto.setLearnStatus("702001");
         return xcCourseTablesDto;
     }
 
@@ -104,6 +107,20 @@ public class MyCourseTablesServiceImpl implements MyCourseTablesService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public PageResult<XcCourseTables> mycoursetable(MyCourseTableParams params) {
+        Page<XcCourseTables> page = new Page<>(params.getPage(), params.getSize());
+        Page<XcCourseTables> selectPage = xcCourseTablesMapper.selectPage(page, new LambdaQueryWrapper<XcCourseTables>()
+                .eq(XcCourseTables::getUserId, params.getUserId())
+        );
+        List<XcCourseTables> records = selectPage.getRecords();
+        long total = selectPage.getTotal();
+        long current = selectPage.getCurrent();
+        long size = selectPage.getSize();
+
+        return new PageResult<XcCourseTables>(records, total, current, size);
     }
 
     /**
