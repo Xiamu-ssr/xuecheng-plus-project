@@ -1,7 +1,7 @@
 package com.xuecheng.feign.pojo;
 
 import com.alibaba.fastjson2.annotation.JSONField;
-import com.fasterxml.jackson.annotation.JsonFormat;
+//import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -88,8 +88,9 @@ public class CourseIndex implements Serializable {
     /**
      * 发布时间
      */
+
+    //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JSONField(format="yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createDate;
 
     /**
