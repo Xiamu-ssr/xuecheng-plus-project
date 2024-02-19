@@ -12,5 +12,15 @@ else
     echo "No containers with name starting with 'xuecheng-plus' found."
 fi
 
-# 执行同目录下的docker-compose.yml
-#docker-compose -f ./docker-compose.yml up -d
+# 将jar移动到宿主机
+cd /root
+mkdir springcloud
+
+cp -r ./xuecheng-plus-gateway/target/xuecheng-plus-gateway.jar													/root/springcloud/xuecheng-plus-gateway.jar
+cp -r ./xuecheng-plus-learning/xuecheng-plus-learning-api/target/xuecheng-plus-learning-api.jar 				/root/springcloud/xuecheng-plus-learning-api.jar
+cp -r ./xuecheng-plus-orders/xuecheng-plus-orders-api/target/xuecheng-plus-orders-api.jar 						/root/springcloud/xuecheng-plus-orders-api.jar
+cp -r ./xuecheng-plus-content/xuecheng-plus-content-api/target/xuecheng-plus-content-api.jar 					/root/springcloud/xuecheng-plus-content-api.jar
+cp -r ./xuecheng-plus-media/xuecheng-plus-media-api/target/xuecheng-plus-media-api.jar							/root/springcloud/xuecheng-plus-media-api.jar
+cp -r ./xuecheng-plus-auth/target/xuecheng-plus-auth-0.0.1-SNAPSHOT.jar											/root/springcloud/xuecheng-plus-auth-0.0.1-SNAPSHOT.jar
+cp -r ./xuecheng-plus-search/target/xuecheng-plus-search.jar													/root/springcloud/xuecheng-plus-search.jar
+cp -r ./xuecheng-plus-system/xuecheng-plus-system-api/target/xuecheng-plus-system-api.jar						/root/springcloud/xuecheng-plus-system-api.jar
