@@ -13,4 +13,4 @@ else
 fi
 
 # 执行同目录下的docker-compose.yml
-docker-compose -f docker-compose.yml up -d
+#docker-compose -f ./docker-compose.yml up -d
