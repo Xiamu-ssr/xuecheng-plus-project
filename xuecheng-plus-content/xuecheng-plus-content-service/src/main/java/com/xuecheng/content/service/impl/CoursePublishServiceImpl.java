@@ -15,6 +15,7 @@ import com.xuecheng.feign.client.MediaClient;
 import com.xuecheng.feign.config.MultipartSupportConfig;
 import com.xuecheng.media.model.dto.UploadFileResultDto;
 import com.xuecheng.messagesdk.service.MqMessageService;
+import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
@@ -170,7 +171,8 @@ public class CoursePublishServiceImpl implements CoursePublishService {
             //选指定模板路径,classpath下templates下
             //得到classpath路径
             String classpath = this.getClass().getResource("/").getPath();
-            configuration.setDirectoryForTemplateLoading(new File(classpath + "/templates/"));
+            //configuration.setDirectoryForTemplateLoading(new File(classpath + "/templates/"));
+            configuration.setTemplateLoader(new ClassTemplateLoader(this.getClass().getClassLoader(), "/templates"));
             //设置字符编码
             configuration.setDefaultEncoding("utf-8");
 
