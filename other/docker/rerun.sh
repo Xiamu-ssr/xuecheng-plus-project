@@ -13,8 +13,7 @@ else
 fi
 
 # 将jar移动到宿主机
-cd /root
-mkdir springcloud
+mkdir /root/springcloud
 
 cp -r ./xuecheng-plus-gateway/target/xuecheng-plus-gateway.jar													/root/springcloud/xuecheng-plus-gateway.jar
 cp -r ./xuecheng-plus-learning/xuecheng-plus-learning-api/target/xuecheng-plus-learning-api.jar 				/root/springcloud/xuecheng-plus-learning-api.jar
