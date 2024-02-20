@@ -12,4 +12,5 @@ cp -r ./xuecheng-plus-auth/target/xuecheng-plus-auth.jar														/cygdrive/
 cp -r ./xuecheng-plus-search/target/xuecheng-plus-search.jar													/cygdrive/c/Users/mumu/Desktop/springcloud/xuecheng-plus-search.jar
 cp -r ./xuecheng-plus-system/xuecheng-plus-system-api/target/xuecheng-plus-system-api.jar						/cygdrive/c/Users/mumu/Desktop/springcloud/xuecheng-plus-system-api.jar
 
-scp -r "C:\Users\mumu\Desktop\springcloud\*" root@192.168.101.65:/root/XChengOnline/docker/springcloud
+#scp -r "C:\Users\mumu\Desktop\springcloud\*" root@192.168.101.65:/root/XChengOnline/docker/springcloud
+scp -r "C:\Users\mumu\Desktop\springcloud\*" root@123.60.168.191:/root/xuecheng-plus-guide/docker/springcloud

@@ -57,4 +57,6 @@ public interface CoursePublishService {
      * @return {@link CoursePublish}
      */
     public CoursePublish getCoursePublish(Long courseId);
+
+    public CoursePublish getCoursePublishCache(Long courseId);
 }

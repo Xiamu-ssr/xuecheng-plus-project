@@ -24,6 +24,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
@@ -38,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -64,6 +66,9 @@ public class CoursePublishServiceImpl implements CoursePublishService {
 
     @Autowired
     MediaClient mediaClient;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Override
     public CoursePreviewDto getCoursePreviewInfo(Long courseId) {
@@ -216,5 +221,25 @@ public class CoursePublishServiceImpl implements CoursePublishService {
     @Override
     public CoursePublish getCoursePublish(Long courseId) {
         return coursePublishMapper.selectById(courseId);
+    }
+
+    @Override
+    public CoursePublish getCoursePublishCache(Long courseId) {
+        Object object = redisTemplate.opsForValue().get("content:course:publish:"+courseId);
+        if (object != null){
+            String string = object.toString();
+            //System.out.println(string);
+            //System.out.println(string);
+            CoursePublish coursePublish = JSON.parseObject(string, CoursePublish.class);
+            return coursePublish;
+        }else {
+            CoursePublish coursePublish = getCoursePublish(courseId);
+            if (coursePublish != null){
+                redisTemplate.opsForValue().set("content:course:publish:"+courseId, JSON.toJSONString(coursePublish));
+            }else {
+                redisTemplate.opsForValue().set("content:course:publish:"+courseId, JSON.toJSONString(coursePublish), 5, TimeUnit.SECONDS);
+            }
+            return coursePublish;
+        }
     }
 }

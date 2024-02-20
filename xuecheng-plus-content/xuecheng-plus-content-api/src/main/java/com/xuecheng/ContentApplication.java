@@ -26,9 +26,15 @@ public class ContentApplication {
     public static void main(String[] args) {
         System.setProperty("nacos.logging.default.config.enabled", "false");
         SpringApplication.run(ContentApplication.class, args);
-//        ConfigurableApplicationContext context = SpringApplication.run(ContentApplication.class, args);
-//        Environment env = context.getEnvironment();
-//        String mysqlUrl = env.getProperty("spring.datasource.url");
-//        log.info("MySQL URL: {}", mysqlUrl);
+        //ConfigurableApplicationContext context = SpringApplication.run(ContentApplication.class, args);
+        //Environment env = context.getEnvironment();
+        //String mysqlUrl = env.getProperty("spring.datasource.url");
+        //log.info("MySQL URL: {}", mysqlUrl);
+        //String logging = env.getProperty("logging.config");
+        //log.info("logging.config: {}", logging);
+        //String freemarker = env.getProperty("spring.freemarker.template-loader-path");
+        //log.info("spring.freemarker.template-loader-path: {}", freemarker);
+        //String redis = env.getProperty("spring.redis.host");
+        //log.info("spring.redis.host: {}", redis);
     }
 }
