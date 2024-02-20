@@ -15,6 +15,11 @@
             <artifactId>xuecheng-plus-learning-model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.xuecheng</groupId>
+            <artifactId>xuecheng-plus-message-sdk</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!-- feign远程调用 -->
         <dependency>
             <groupId>com.xuecheng</groupId>
@@ -26,11 +31,6 @@
         <!--    <artifactId>xuecheng-plus-content-model</artifactId>-->
         <!--    <version>0.0.1-SNAPSHOT</version>-->
         <!--</dependency>-->
-        <dependency>
-            <groupId>com.xuecheng</groupId>
-            <artifactId>xuecheng-plus-message-sdk</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
         <!--nacos-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

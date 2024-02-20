@@ -5,6 +5,7 @@ import com.xuecheng.content.model.dto.CoursePreviewDto;
 import com.xuecheng.content.service.CourseBaseInfoService;
 import com.xuecheng.content.service.CoursePublishService;
 import com.xuecheng.content.util.SecurityUtil;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,11 +29,9 @@ public class CourseOpenController {
     @Autowired
     private CoursePublishService coursePublishService;
 
+    @Operation(description = "查询课程预览信息<br/>面向机构-提前预览课程")
     @GetMapping("/course/whole/{courseId}")
     public CoursePreviewDto getPreviewInfo(@PathVariable("courseId") Long courseId) {
-//        SecurityUtil.XcUser xcUser = SecurityUtil.getUser();
-//        System.out.println(xcUser.getUsername());
-        System.out.println("666");
         //获取课程预览信息
         return coursePublishService.getCoursePreviewInfo(courseId);
     }

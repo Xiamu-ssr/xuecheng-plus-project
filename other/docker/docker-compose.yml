@@ -1,0 +1,93 @@
+version: "3.8"
+networks:
+  docker_xuecheng:
+    external: true
+
+services:
+  xuecheng-plus-gateway:
+    container_name: xuecheng-plus-gateway
+    image: openjdk:17
+    ports:
+      - "63010:63010"
+    volumes:
+      - ../../xuecheng-plus-gateway/target/xuecheng-plus-gateway.jar:/app.jar
+    networks:
+      docker_xuecheng:
+        ipv4_address: 172.20.11.1
+
+  xuecheng-plus-learning:
+    container_name: xuecheng-plus-learning
+    image: openjdk:17
+    ports:
+      - "63020:63020"
+    volumes:
+      - ../../xuecheng-plus-learning/xuecheng-plus-learning-api/target/xuecheng-plus-learning-api.jar:/app.jar
+    networks:
+      docker_xuecheng:
+        ipv4_address: 172.20.12.1
+
+  xuecheng-plus-order:
+    container_name: xuecheng-plus-order
+    image: openjdk:17
+    ports:
+      - "63030:63030"
+    volumes:
+      - ../../xuecheng-plus-orders/xuecheng-plus-orders-api/target/xuecheng-plus-orders-api.jar:/app.jar
+    networks:
+      docker_xuecheng:
+        ipv4_address: 172.20.13.1
+
+  xuecheng-plus-content:
+    container_name: xuecheng-plus-content
+    image: openjdk:17
+    ports:
+      - "63040:63040"
+    volumes:
+      - ../../xuecheng-plus-content/xuecheng-plus-content-api/target/xuecheng-plus-content-api.jar:/app.jar
+    networks:
+      docker_xuecheng:
+        ipv4_address: 172.20.14.1
+
+  xuecheng-plus-media:
+    container_name: xuecheng-plus-media
+    image: openjdk:17
+    ports:
+      - "63050:63050"
+    volumes:
+      - ../../xuecheng-plus-media/xuecheng-plus-media-api/target/xuecheng-plus-media-api.jar:/app.jar
+    networks:
+      docker_xuecheng:
+        ipv4_address: 172.20.15.1
+
+  xuecheng-plus-auth:
+    container_name: xuecheng-plus-auth
+    image: openjdk:17
+    ports:
+      - "63070:63070"
+    volumes:
+      - ../../xuecheng-plus-auth/target/xuecheng-plus-auth-0.0.1-SNAPSHOT.jar:/app.jar
+    networks:
+      docker_xuecheng:
+        ipv4_address: 172.20.16.1
+
+  xuecheng-plus-search:
+    container_name: xuecheng-plus-search
+    image: openjdk:17
+    ports:
+      - "63080:63080"
+    volumes:
+      - ../../xuecheng-plus-search/target/xuecheng-plus-search.jar:/app.jar
+    networks:
+      docker_xuecheng:
+        ipv4_address: 172.20.17.1
+
+  xuecheng-plus-system:
+    container_name: xuecheng-plus-system
+    image: openjdk:17
+    ports:
+      - "63110:63110"
+    volumes:
+      - ../../xuecheng-plus-system/xuecheng-plus-system-api/target/xuecheng-plus-system-api.jar:/app.jar
+    networks:
+      docker_xuecheng:
+        ipv4_address: 172.20.18.1

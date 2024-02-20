@@ -22,7 +22,8 @@ public class MediaOpenController {
     @Autowired
     MediaFileService mediaFileService;
 
-    @Operation(description = "预览文件")
+
+    @Operation(description = "预览文件<br/>面向机构-提前预览视频文件")
     @GetMapping("/preview/{mediaId}")
     public RestResponse<String> getPlayUrlByMediaId(@PathVariable String mediaId){
 
@@ -33,6 +34,5 @@ public class MediaOpenController {
             XueChengPlusException.cast("视频还没有完成转码处理");
         }
         return RestResponse.success(mediaFiles.getUrl());
-
     }
 }

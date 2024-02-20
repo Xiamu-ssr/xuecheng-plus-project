@@ -6,12 +6,14 @@ import com.xuecheng.ucenter.model.dto.XcUserExt;
 import com.xuecheng.ucenter.model.po.XcUser;
 import com.xuecheng.ucenter.service.AuthService;
 import com.xuecheng.ucenter.service.WxAuthService;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Map;
 
+@Slf4j
 @Service("wx_authservice")
 public class WxAuthServiceImpl implements AuthService, WxAuthService {
     @Override
@@ -35,7 +37,8 @@ public class WxAuthServiceImpl implements AuthService, WxAuthService {
         MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
         RequestBody body = RequestBody.create(mediaType, "grant_type=authorization_code&code="+code+"&redirect_uri=http://www.51xuecheng.cn/sign.html");
         Request request = new Request.Builder()
-                .url("http://localhost:63070/auth/oauth2/token")
+                //.url("http://localhost:63070/auth/oauth2/token")
+                .url("http://127.0.0.1:63070/auth/oauth2/token")
                 .method("POST", body)
 //                .addHeader("User-Agent", "Apifox/1.0.0 (https://apifox.com)")
                 .addHeader("Authorization", "Basic WGNXZWJBcHA6WGNXZWJBcHA=")
@@ -47,6 +50,8 @@ public class WxAuthServiceImpl implements AuthService, WxAuthService {
         try {
             Response response = client.newCall(request).execute();
             String result = response.body().string();
+            System.out.println(result);
+            log.info("token请求:result={}",result);
             Map map = JSON.parseObject(result, Map.class);
             return map;
         } catch (IOException e) {

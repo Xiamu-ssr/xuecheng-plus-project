@@ -16,7 +16,7 @@ public class SecurityUtil {
     public static XcUser getUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null){
-            throw new RuntimeException("JWT异常");
+            throw new RuntimeException("JWT异常,是否登录?");
         }
         if (authentication instanceof JwtAuthenticationToken) {
             JwtAuthenticationToken jwtAuth = (JwtAuthenticationToken) authentication;
@@ -26,7 +26,7 @@ public class SecurityUtil {
             Object sub = tokenAttributes.get("sub");
             return JSON.parseObject(sub.toString(), XcUser.class);
         }
-        throw new RuntimeException("JWT异常");
+        throw new RuntimeException("JWT异常,是否登录?");
     }
     @Data
     public static class XcUser implements Serializable {

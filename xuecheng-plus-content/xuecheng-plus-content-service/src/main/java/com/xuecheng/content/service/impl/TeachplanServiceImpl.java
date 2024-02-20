@@ -153,4 +153,19 @@ public class TeachplanServiceImpl implements TeachplanService {
             XueChengPlusException.cast("解除关系失败");
         }
     }
+
+    @Override
+    public boolean isTeachplanPreview(Long teachplanId) {
+        Teachplan teachplan = teachplanMapper.selectById(teachplanId);
+        if (teachplan == null){
+            XueChengPlusException.cast("指定课程计划不存在");
+        }
+        String isPreview = teachplan.getIsPreview();
+        if ("1".equals(isPreview)){
+            return true;
+        }else if ("0".equals(isPreview)){
+            return false;
+        }
+        return false;
+    }
 }

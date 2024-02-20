@@ -53,7 +53,9 @@ public class MyCourseTablesController {
     @Operation(description = "我的课程表")
     @GetMapping("/mycoursetable")
     public PageResult<XcCourseTables> mycoursetable(MyCourseTableParams params) {
-        return null;
+        SecurityUtil.XcUser user = SecurityUtil.getUser();
+        params.setUserId(user.getId());
+        return myCourseTablesService.mycoursetable(params);
     }
 
 }

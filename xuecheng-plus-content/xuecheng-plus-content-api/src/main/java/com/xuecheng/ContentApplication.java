@@ -18,7 +18,7 @@ import org.springframework.core.env.Environment;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients
+@EnableFeignClients(basePackages = "com.xuecheng.feign.client")
 @Slf4j
 @OpenAPIDefinition(info = @Info(title = "学成在线内容管理系统", description = "内容系统对课程相关信息进行管理", version = "1.0.0"))
 //@OpenAPIDefinition(info = @Info(title = "内容管理系统", description = "对课程相关信息进行管理", version = "1.0.0"))

@@ -3,8 +3,8 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.xuecheng</groupId>
 		<artifactId>xuecheng-plus-parent</artifactId>
+		<groupId>com.xuecheng</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../xuecheng-plus-parent</relativePath>
 	</parent>
@@ -59,19 +59,19 @@
 <!--			</plugin>-->
 <!--		</plugins>-->
 <!--	</build>-->
-	<build>
-		<pluginManagement>
-			<plugins>
-				<!-- 明确地覆盖父POM中的spring-boot-maven-plugin配置 -->
-				<plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-					<!-- 配置为空，意味着不执行任何操作 -->
-					<configuration/>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
+<!--	<build>-->
+<!--		<pluginManagement>-->
+<!--			<plugins>-->
+<!--				&lt;!&ndash; 明确地覆盖父POM中的spring-boot-maven-plugin配置 &ndash;&gt;-->
+<!--				<plugin>-->
+<!--					<groupId>org.springframework.boot</groupId>-->
+<!--					<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--					&lt;!&ndash; 配置为空，意味着不执行任何操作 &ndash;&gt;-->
+<!--					<configuration/>-->
+<!--				</plugin>-->
+<!--			</plugins>-->
+<!--		</pluginManagement>-->
+<!--	</build>-->
 
 
 </project>

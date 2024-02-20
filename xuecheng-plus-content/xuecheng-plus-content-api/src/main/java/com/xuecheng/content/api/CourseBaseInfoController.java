@@ -51,7 +51,7 @@ public class CourseBaseInfoController {
             @Parameter(description = "请求具体内容") @RequestBody(required = false) QueryCourseParamsDto dto){
         SecurityUtil.XcUser xcUser = SecurityUtil.getUser();
         if (ObjectUtils.isEmpty(xcUser)){
-            XueChengPlusException.cast("JWT异常");
+            XueChengPlusException.cast("JWT异常,是否登录?");
         }
         Long companyId = null;
         if (StringUtils.isNotEmpty(xcUser.getCompanyId())){

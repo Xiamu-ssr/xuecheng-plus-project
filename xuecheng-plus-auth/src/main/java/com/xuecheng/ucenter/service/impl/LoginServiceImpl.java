@@ -31,7 +31,7 @@ public class LoginServiceImpl implements LoginService {
             throw new RuntimeException("存在相同账户名，请更换");
         }
         //插入用户表
-        dto.setId(UUID.randomUUID().toString());
+        //dto.setId(UUID.randomUUID().toString());
         dto.setWxUnionid("test");
         dto.setName(dto.getUsername());
         dto.setUtype("101001");

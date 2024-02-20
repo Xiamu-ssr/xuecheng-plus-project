@@ -21,12 +21,11 @@ import java.util.Objects;
 /**
  * @author Mr.M
  * @version 1.0
- * @description TODO
+ * @description
  * @date 2023/2/23 16:59
  */
 @Slf4j
 @Configuration
-//public class PayNotifyConfig implements ApplicationContextAware {
 public class PayNotifyConfig{
 
     @Autowired
@@ -85,7 +84,7 @@ public class PayNotifyConfig{
             String exchange = returned.getExchange();
             String routingKey = returned.getRoutingKey();
             // 投递失败，记录日志
-            log.info("消息发送失败，应答码{}，原因{}，交换机{}，路由键{},消息{}",
+            log.error("消息发送失败，应答码{}，原因{}，交换机{}，路由键{},消息{}",
                     replyCode, replyText, exchange, routingKey, message.toString());
             MqMessage mqMessage = JSON.parseObject(message.toString(), MqMessage.class);
             // 消息投递到queue失败，将消息再添加到消息表

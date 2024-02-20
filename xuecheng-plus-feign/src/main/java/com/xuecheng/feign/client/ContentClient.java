@@ -12,4 +12,7 @@ public interface ContentClient {
     @ResponseBody
     @GetMapping("/r/coursepublish/{courseId}")
     public CoursePublish getCoursepublish(@PathVariable("courseId") Long courseId);
+
+    @GetMapping("/teachplan/isPreview/{teachplanId}")
+    public boolean isTeachplanPreview(@PathVariable Long teachplanId);
 }
