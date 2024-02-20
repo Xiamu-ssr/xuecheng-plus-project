@@ -63,7 +63,7 @@ public class LoginController {
      * @return {@link String}
      * @throws IOException IOException
      */
-    //@CrossOrigin("*")
+    @CrossOrigin("*")
     @GetMapping("/wxLogin")
     public String wxLogin(String code) throws IOException {
 //        System.out.println("微信扫码回调");
@@ -76,7 +76,7 @@ public class LoginController {
         return wxAuthService.wxAuth(code);
     }
 
-    //@CrossOrigin("*")
+    @CrossOrigin("*")
     @PostMapping("/register")
     public void register(@RequestBody XcUser dto){
         loginService.register(dto);
