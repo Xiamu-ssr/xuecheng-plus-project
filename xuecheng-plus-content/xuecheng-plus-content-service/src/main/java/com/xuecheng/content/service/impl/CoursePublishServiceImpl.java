@@ -269,7 +269,7 @@ public class CoursePublishServiceImpl implements CoursePublishService {
                 CoursePublish coursePublish = getCoursePublish(courseId);
                 if (coursePublish != null) {
                     bloomFilter.add(key);
-                    redisTemplate.opsForValue().set(key, JSON.toJSONString(coursePublish));
+                    redisTemplate.opsForValue().set(key, JSON.toJSONString(coursePublish), 60, TimeUnit.SECONDS);
                 } else {
                     int timeout = 10 + new Random().nextInt(20);
                     redisTemplate.opsForValue().set(key, JSON.toJSONString(coursePublish), timeout, TimeUnit.SECONDS);
@@ -308,7 +308,7 @@ public class CoursePublishServiceImpl implements CoursePublishService {
                 CoursePublish coursePublish = getCoursePublish(courseId);
                 if (coursePublish != null) {
                     bloomFilter.add(key);
-                    redisTemplate.opsForValue().set(key, JSON.toJSONString(coursePublish));
+                    redisTemplate.opsForValue().set(key, JSON.toJSONString(coursePublish), 60, TimeUnit.SECONDS);
                 } else {
                     int timeout = 10 + new Random().nextInt(20);
                     redisTemplate.opsForValue().set(key, JSON.toJSONString(coursePublish), timeout, TimeUnit.SECONDS);

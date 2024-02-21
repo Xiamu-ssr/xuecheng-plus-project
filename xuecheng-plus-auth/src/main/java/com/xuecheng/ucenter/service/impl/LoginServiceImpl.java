@@ -31,7 +31,7 @@ public class LoginServiceImpl implements LoginService {
             throw new RuntimeException("存在相同账户名，请更换");
         }
         //插入用户表
-        //dto.setId(UUID.randomUUID().toString());
+        dto.setId(getNextId());
         dto.setWxUnionid("test");
         dto.setName(dto.getUsername());
         dto.setUtype("101001");
@@ -51,5 +51,16 @@ public class LoginServiceImpl implements LoginService {
         if (insert1 <= 0){
             throw new RuntimeException("添加用户失败");
         }
+    }
+
+    private String getNextId(){
+        String id = xcUserMapper.selectOne(new LambdaQueryWrapper<XcUser>()
+                .select(XcUser::getId)
+                .orderByDesc(XcUser::getId)
+                .last("LIMIT 1")
+        ).getId();
+        int newId = Integer.parseInt(id) + 1;
+        String string = String.valueOf(newId);
+        return string;
     }
 }
