@@ -72,3 +72,11 @@
 1. 整合RabbitMQ
 2. 完善支付流程
 3. some bug fix
+
+# Stage 13
+1. 项目部署指导Wiki
+2. 云服务器实机部署测试
+3. 修复前后端bug
+
+# Stage 14
+1. redis

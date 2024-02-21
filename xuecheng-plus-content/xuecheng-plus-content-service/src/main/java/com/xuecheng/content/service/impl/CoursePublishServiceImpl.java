@@ -1,6 +1,7 @@
 package com.xuecheng.content.service.impl;
 
 import com.alibaba.fastjson2.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.xuecheng.base.exception.XueChengPlusException;
 import com.xuecheng.content.mapper.*;
@@ -18,10 +19,14 @@ import com.xuecheng.messagesdk.service.MqMessageService;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.redisson.api.RBloomFilter;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -35,10 +40,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -69,6 +71,22 @@ public class CoursePublishServiceImpl implements CoursePublishService {
 
     @Autowired
     RedisTemplate redisTemplate;
+    @Autowired
+    RedissonClient redissonClient;
+
+    private RBloomFilter<String> bloomFilter;
+
+    @PostConstruct
+    public void init(){
+        //初始化布隆过滤器
+        bloomFilter = redissonClient.getBloomFilter("bloom-filter");
+        bloomFilter.tryInit(100, 0.003);
+        List<CoursePublish> coursePublishList = coursePublishMapper.selectList(new LambdaQueryWrapper<CoursePublish>());
+        coursePublishList.forEach(coursePublish -> {
+            String key = "content:course:publish:" + coursePublish.getId();
+            bloomFilter.add(key);
+        });
+    }
 
     @Override
     public CoursePreviewDto getCoursePreviewInfo(Long courseId) {
@@ -225,21 +243,80 @@ public class CoursePublishServiceImpl implements CoursePublishService {
 
     @Override
     public CoursePublish getCoursePublishCache(Long courseId) {
-        Object object = redisTemplate.opsForValue().get("content:course:publish:"+courseId);
+        String key = "content:course:publish:" + courseId;
+        //布隆过滤器
+        boolean contains = bloomFilter.contains(key);
+        if (!contains){
+            return null;
+        }
+        //先查询redis
+        Object object = redisTemplate.opsForValue().get(key);
         if (object != null){
             String string = object.toString();
-            //System.out.println(string);
-            //System.out.println(string);
             CoursePublish coursePublish = JSON.parseObject(string, CoursePublish.class);
             return coursePublish;
         }else {
-            CoursePublish coursePublish = getCoursePublish(courseId);
-            if (coursePublish != null){
-                redisTemplate.opsForValue().set("content:course:publish:"+courseId, JSON.toJSONString(coursePublish));
-            }else {
-                redisTemplate.opsForValue().set("content:course:publish:"+courseId, JSON.toJSONString(coursePublish), 5, TimeUnit.SECONDS);
+            //后查询数据库
+            //加锁，防止缓存击穿
+            synchronized (this){
+                //单例双检锁
+                object = redisTemplate.opsForValue().get(key);
+                if (object != null){
+                    String string = object.toString();
+                    CoursePublish coursePublish = JSON.parseObject(string, CoursePublish.class);
+                    return coursePublish;
+                }
+                CoursePublish coursePublish = getCoursePublish(courseId);
+                if (coursePublish != null) {
+                    bloomFilter.add(key);
+                    redisTemplate.opsForValue().set(key, JSON.toJSONString(coursePublish));
+                } else {
+                    int timeout = 10 + new Random().nextInt(20);
+                    redisTemplate.opsForValue().set(key, JSON.toJSONString(coursePublish), timeout, TimeUnit.SECONDS);
+                }
+                return coursePublish;
             }
+        }
+    }
+
+    //多例分布式锁
+    public CoursePublish getCoursePublishCacheMul(Long courseId) {
+        String key = "content:course:publish:" + courseId;
+        //布隆过滤器
+        boolean contains = bloomFilter.contains(key);
+        if (!contains){
+            return null;
+        }
+        //先查询redis
+        Object object = redisTemplate.opsForValue().get(key);
+        if (object != null){
+            String string = object.toString();
+            CoursePublish coursePublish = JSON.parseObject(string, CoursePublish.class);
             return coursePublish;
+        }else {
+            //后查询数据库
+            //加锁，防止缓存击穿
+            RLock lock = redissonClient.getLock("content:lock:course:publish:" + courseId);
+            lock.lock();
+            try {
+                object = redisTemplate.opsForValue().get(key);
+                if (object != null){
+                    String string = object.toString();
+                    CoursePublish coursePublish = JSON.parseObject(string, CoursePublish.class);
+                    return coursePublish;
+                }
+                CoursePublish coursePublish = getCoursePublish(courseId);
+                if (coursePublish != null) {
+                    bloomFilter.add(key);
+                    redisTemplate.opsForValue().set(key, JSON.toJSONString(coursePublish));
+                } else {
+                    int timeout = 10 + new Random().nextInt(20);
+                    redisTemplate.opsForValue().set(key, JSON.toJSONString(coursePublish), timeout, TimeUnit.SECONDS);
+                }
+                return coursePublish;
+            }finally {
+                lock.unlock();
+            }
         }
     }
 }

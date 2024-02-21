@@ -3,11 +3,14 @@ package com.xuecheng;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.redisson.spring.starter.RedissonAutoConfigurationCustomizer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
 /**
@@ -36,5 +39,15 @@ public class ContentApplication {
         //log.info("spring.freemarker.template-loader-path: {}", freemarker);
         //String redis = env.getProperty("spring.redis.host");
         //log.info("spring.redis.host: {}", redis);
+    }
+
+    //解决空密码问题
+    @Bean
+    public RedissonAutoConfigurationCustomizer redissonAutoConfigurationCustomizer() {
+        return configuration -> {
+            if (StringUtils.isEmpty(configuration.useSingleServer().getPassword())) {
+                configuration.useSingleServer().setPassword(null);
+            }
+        };
     }
 }

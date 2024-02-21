@@ -9,6 +9,7 @@ import com.xuecheng.content.model.po.CoursePublish;
 import com.xuecheng.content.service.CoursePublishService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.redisson.api.RBloomFilter;
 
 import java.util.List;
 
@@ -31,6 +33,9 @@ import java.util.List;
 public class CoursePublishController {
     @Autowired
     CoursePublishService coursePublishService;
+
+    @Autowired
+    RedissonClient redissonClient;
 
     @GetMapping("/coursepreview/{courseId}")
     @Operation(description = "课程整体预览html")
@@ -75,6 +80,7 @@ public class CoursePublishController {
     public CoursePreviewDto getCoursePublish(@PathVariable("courseId") Long courseId) {
         //查询课程发布信息
         //CoursePublish coursePublish = coursePublishService.getCoursePublish(courseId);
+
         CoursePublish coursePublish = coursePublishService.getCoursePublishCache(courseId);
         if (coursePublish == null) {
             return new CoursePreviewDto();

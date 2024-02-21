@@ -10,4 +10,4 @@ Authorization: Basic eENXZWJBcHA6eENXZWJBcHA=
 grant_type=authorization_code&code=pBJW7Q9ITsEIjUqrsRkTOdn7t2bZ3JLlMdppTegKjV3vlK-yrEOYlODlXnTTfbQKlUiXgFm8h1wX2RoismwORkHDKlfaE0JK1x_o88T5iKcSu-MIPMpRZYDQmFH8CN1E&redirect_uri=http://www.51xuecheng.cn
 
 ###
-GET http://localhost:63010/content/course/whole/1
+GET http://localhost:63010/content/course/whole/120
